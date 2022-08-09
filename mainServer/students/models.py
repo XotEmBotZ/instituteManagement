@@ -9,9 +9,8 @@ class student(models.Model):
     std=models.IntegerField()
     sec=models.CharField(max_length=1)
     dob=models.DateField()
-    classRoll=models.IntegerField()
     address=models.TextField()
-    joiningDate=models.DateField()
+    joiningDate=models.DateField(auto_now_add=True)
 
 class parent(models.Model):
     student=models.ForeignKey(student, on_delete=models.CASCADE)
