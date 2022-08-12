@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from . import models
-
+import json
 
 # Create your views here.
 def index(request):
@@ -31,5 +32,17 @@ def addStudent(request):
             return render(request, "students/err.html",context)
     return render(request, "students/addStudent.html",context)
 
+#TODO  COmplete it
 def updateStudent(request):
     pass
+
+def faceCascade(request):
+    cascades={
+        "cascade":[]
+    }
+    for cascade in models.faceCascade.objects.all():
+        cascades["cascade"].append({
+            "student":cascade.student.adminNo,
+            "studentCascade":json.loads(cascade.cascade)
+        })
+    return JsonResponse(cascades)
