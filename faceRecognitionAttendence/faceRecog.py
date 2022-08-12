@@ -9,7 +9,7 @@ if config.ASK_VALUES_ON_STARTUP:
     serverUrl=input("Server URL:")
     sercerSecret=input("Server Secret")
 
-cascades=requests.get(config.SERVER_URL).json()
+cascades=requests.get(config.SERVER_URL_GET).json()
 stdAdminNo=[]
 stdKnownFaceCascade=[]
 for a in cascades["cascade"]:
@@ -32,7 +32,6 @@ while True:
         name = 0
         face_distances = face_recognition.face_distance(stdKnownFaceCascade, faceEncoding)
         best_match_index = np.argmin(face_distances)
-        print(matches[best_match_index])
         if matches[best_match_index]:
             name = stdAdminNo[best_match_index]
             names.append(name)
@@ -51,6 +50,10 @@ presentStd.remove("NaN")
 for std in presentStd:
     stdAdminNo.remove(std)
 absentStd=stdAdminNo
+data={
+    "absentStudents":absentStd,
+}
+print(requests.post(config.SERVER_URL_POST,data=json.dumps(data)).status_code)
 
 video.release()
 cv2.destroyAllWindows()
