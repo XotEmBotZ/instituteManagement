@@ -1,0 +1,11 @@
+{% extends 'students/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'students/css/updateStudentFirst.css' %}">
+{% endblock head %}
+{% block main %}
+<label for="adminNo">Enter the adminNo of the student
+    <input type="number" name="adminNo" id="adminNo">
+</label>
+<button type="submit" onclick="document.location.href=`${document.getElementById('adminNo').value}`">Edit</button>
+{% endblock main%}
