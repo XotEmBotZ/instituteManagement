@@ -8,4 +8,5 @@ urlpatterns=[
     path("updateStudent/<int:adminNo>/",views.updateStudent),
     # API
     path("api/studentCascade/",views.faceCascade.as_view()),
+    path("api/studentAttendance/",views.studentAttendance.as_view()),
 ]

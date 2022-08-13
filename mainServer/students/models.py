@@ -29,3 +29,10 @@ class faceCascade(models.Model):
 
     def __str__(self):
         return f"{self.student.firstName} {self.student.lastName}-{self.student.std}{self.student.sec}"
+
+class attendanceAbsentStudent(models.Model):
+    student=models.ForeignKey(student,on_delete=models.CASCADE)
+    date=models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student.firstName} {self.student.lastName}-{self.student.std}{self.student.sec} {self.date}"

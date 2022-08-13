@@ -4,3 +4,4 @@ from . import models
 admin.site.register(models.student)
 admin.site.register(models.parent)
 admin.site.register(models.faceCascade)
+admin.site.register(models.attendanceAbsentStudent)
