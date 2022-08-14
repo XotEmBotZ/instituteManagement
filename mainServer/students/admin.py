@@ -3,5 +3,5 @@ from . import models
 # Register your models here.
 admin.site.register(models.student)
 admin.site.register(models.parent)
-admin.site.register(models.faceCascade)
-admin.site.register(models.attendanceAbsentStudent)
+admin.site.register(models.studentFaceCascade)
+admin.site.register(models.studentAttendanceAbsentStudent)

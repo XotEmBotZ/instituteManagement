@@ -1,0 +1,32 @@
+{% extends 'teachers/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'teachers/css/addStudent.css' %}">
+{% endblock head %}
+{% block main %}
+{% if processed %}
+<h3>{{adminNo}}</h3>
+{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="firstName">First Name:
+        <input type="text" name="firstName" id="firstName">
+    </label>
+    <label for="lastName">Last Name:
+        <input type="text" name="lastName" id="lastName">
+    </label>
+    <label for="std">Standard:
+        <input type="number" name="std" id="std">
+    </label>
+    <label for="sec">Section:
+        <input type="text" name="sec" id="sec">
+    </label>
+    <label for="dob">Date Of Birth
+        <input type="date" name="dob" id="dob">
+    </label>
+    <label for="address">Address:
+        <textarea name="address" id="address" cols="30" rows="5"></textarea>
+    </label>
+    <button type="submit">Submit</button>
+</form>
+{% endblock main %}
