@@ -6,5 +6,6 @@ urlpatterns = [
     path("addStudent/",views.addStudent),
     path("updateStudent/",views.updateStudentFirst),
     path("updateStudent/<int:adminNo>/",views.updateStudent),
+    path("addcomplaint/",views.addComplaint.as_view()),
     
 ]
