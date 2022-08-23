@@ -9,7 +9,6 @@ from students import models as stdModels
 def index(request):
     return render(request, "teachers/index.html")
 
-
 def addStudent(request):
     context = {}
     context['processed'] = False
@@ -127,3 +126,17 @@ class addComplaint(View):
             context["msgPresent"] = True
             context["msg"] = "Student Details Not Found!"
         return render(request, "teachers/addComplaint.html", context)
+
+class viewComplaint(View):
+    def get(self,request):
+        context={"allComplaint":[]}
+        allComplaints=models.teachersComplaint.objects.all()
+        for complaint in allComplaints:
+            context["allComplaint"].append({
+                "complaintId":complaint.complaintId,
+                "complaint":complaint.complaint,
+                "status":complaint.status,
+                "studentName":f"{complaint.student.firstName} {complaint.student.lastName}",
+                "studentStdSec":f"{complaint.student.std}-{complaint.student.sec}"
+            })
+        return render(request,"teachers/viewComplaint.html",context)

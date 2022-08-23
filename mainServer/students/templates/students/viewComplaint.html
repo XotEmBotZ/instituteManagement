@@ -1,0 +1,39 @@
+{% extends 'students/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'students/css/viewComplaint.css' %}">
+<script defer src="{% static 'students/js/viewComplaint.js' %}"></script>
+{% endblock head %}
+{% block main %}
+<div class="head">
+    <label for="id">Complaint Id:
+        <input type="number" name="complaintId" id="complaintId">
+    </label>
+    <label for="search">Search:
+        <input type="search" name="search" id="search">
+    </label>
+
+</div>
+<table id="table">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">Complaint Id</th>
+            <th onclick="sortTable(1)">Student Name</th>
+            <th onclick="sortTable(2)">Student Std-Sec</th>
+            <th onclick="sortTable(3)" class="complaintColumn">Complaint</th>
+            <th onclick="sortTable(4)">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for complaint in allComplaint %}
+        <tr class="row">
+            <td>{{complaint.complaintId}}</td>
+            <td>{{complaint.studentName}}</td>
+            <td>{{complaint.studentStdSec}}</td>
+            <td>{{complaint.complaint}}</td>
+            <td>{{complaint.status}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock main %}

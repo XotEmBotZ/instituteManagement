@@ -4,10 +4,14 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse , HttpResponse
 from . import models
+from teachers import models as teachersModels
 import json
 import datetime
 
 # Create your views here.
+def index(request):
+    return render(request, "students/index.html",)
+
 class faceCascade(View):
     def get(self, request):
         cascades={
@@ -37,3 +41,18 @@ class studentAttendance(View):
             std=models.student.objects.get(adminNo=absentStudent)
             models.studentAttendanceAbsentStudent.objects.get_or_create(student=std,date=datetime.date.today())
         return HttpResponse("Success")
+
+
+class viewComplaint(View):
+    def get(self,request):
+        context={"allComplaint":[]}
+        allComplaints=teachersModels.teachersComplaint.objects.all()
+        for complaint in allComplaints:
+            context["allComplaint"].append({
+                "complaintId":complaint.complaintId,
+                "complaint":complaint.complaint,
+                "status":complaint.status,
+                "studentName":f"{complaint.student.firstName} {complaint.student.lastName}",
+                "studentStdSec":f"{complaint.student.std}-{complaint.student.sec}"
+            })
+        return render(request,"students/viewComplaint.html",context)
