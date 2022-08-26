@@ -23,9 +23,16 @@ class parent(models.Model):
     phNo=models.IntegerField()
     occupation=models.TextField()
 
-class faceCascade(models.Model):
+class studentFaceCascade(models.Model):
     student=models.ForeignKey(student,on_delete=models.CASCADE)
     cascade=models.TextField()
 
     def __str__(self):
         return f"{self.student.firstName} {self.student.lastName}-{self.student.std}{self.student.sec}"
+
+class studentAttendanceAbsentStudent(models.Model):
+    student=models.ForeignKey(student,on_delete=models.CASCADE)
+    date=models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student.firstName} {self.student.lastName}-{self.student.std}{self.student.sec} {self.date}"
