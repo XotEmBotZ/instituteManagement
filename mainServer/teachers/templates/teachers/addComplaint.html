@@ -1,0 +1,40 @@
+{% extends 'teachers/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'teachers/css/addComplaint.css' %}">
+<script src="{% static 'teachers/js/addComplaint.js' %}" defer></script>
+{% endblock head %}
+{% block main %}
+{% if msgPresent %}
+<div class="sideNote">
+    <h3>{{msg}}</h3>
+</div>
+{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="studentDetailsCheck" value="{{stdDetailsCheck}}" id="studentCheck">
+    <fieldset>
+        <legend>Student Details</legend>
+        <label for="adminNo">AdminNo:
+            <input type="number" name="adminNo" id="adminNo" value="{{adminNo}}">
+        </label>
+        <label for="stdName">Student Name:
+            <input type="text" name="stdName" id="stdName" value="{{stdName}}" disabled>
+        </label>
+        <label for="stdClass">Student Class:
+            <input type="text" name="stdClass" id="stdClass" value="{{stdClass}}" disabled>
+        </label>
+        <label for="stdSec">Student Sec:
+            <input type="text" name="stdSec" id="stdSec" value="{{stdSec}}" disabled>
+        </label>
+    </fieldset>
+    <button type="submit">Get Details</button>
+    <fieldset>
+        <legend>Complaint</legend>
+        <label for="complaint">Complaint:
+            <textarea name="complaint" id="complaint" cols="30" rows="5"></textarea>
+        </label>
+    </fieldset>
+    <button type="submit">Submit</button>
+</form>
+{% endblock main %}
