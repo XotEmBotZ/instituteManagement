@@ -1,9 +1,11 @@
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import JsonResponse
 from students import models as std_models
 import json
 import datetime
-from django.views.decorators.csrf import csrf_exempt
+
+from . import bgJobs
 # Create your views here.
 
 
@@ -56,3 +58,7 @@ def setFaceCascade(request):
             return JsonResponse({"status": "err","err":str(e)})
     else:
         return JsonResponse({"status": "HttpErr"})
+
+def testBgJob(request):
+    bgJobs.gainBehaviorScore()
+    return JsonResponse({"status": "success"})

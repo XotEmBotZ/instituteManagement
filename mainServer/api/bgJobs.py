@@ -25,6 +25,26 @@ def run_continuously(interval=1):
 
 def printTest(Text):
     time.sleep(10)
+    print(Text)
+
+def calculateBehaviorScore():
+    allComplaint=teachers_models.teachersComplaint.objects.filter(isChecked=False)
+    for complaint in allComplaint:
+        stdModel=complaint.student
+        stdModel.behaviorScore-=complaint.level*10
+        if stdModel.behaviorScore<0:
+            stdModel.behaviorScore=0
+        stdModel.save()
+        complaint.isChecked=True
+        complaint.save()
+
+def gainBehaviorScore():
+    allStudents=std_models.student.objects.filter(behaviorScore__lt=100)
+    for student in allStudents:
+        student.behaviorScore+=1
+        student.save()
+
+
 
 schedule.every(10).seconds.do(run_threaded,printTest,Text="Texts")
 # #Start the background thread
