@@ -1,4 +1,4 @@
-from ctypes import addressof
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 # Create your models here.
@@ -11,7 +11,7 @@ class student(models.Model):
     dob=models.DateField()
     address=models.TextField()
     joiningDate=models.DateField(auto_now_add=True)
-
+    behaviorScore=models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)],default=100)
     def __str__(self) -> str:
         return f"{self.adminNo}-{self.firstName} {self.lastName} - {self.std}{self.sec}"
 

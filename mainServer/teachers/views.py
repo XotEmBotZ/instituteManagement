@@ -115,6 +115,7 @@ class addComplaint(View):
                 complaintModel=models.teachersComplaint()
                 complaintModel.student=studentModel
                 complaintModel.complaint=request.POST.get("complaint", None)
+                complaintModel.level=request.POST.get("complaintLevel",1)
                 complaintModel.save()
                 context["msgPresent"] = True
                 context["msg"] = f"Complaint Created with ID- {complaintModel.complaintId}"
@@ -137,6 +138,8 @@ class viewComplaint(View):
                 "complaint":complaint.complaint,
                 "status":complaint.status,
                 "studentName":f"{complaint.student.firstName} {complaint.student.lastName}",
-                "studentStdSec":f"{complaint.student.std}-{complaint.student.sec}"
+                "studentStdSec":f"{complaint.student.std}-{complaint.student.sec}",
+                "complaintLevel":complaint.level,
+                "studentAdminNo":complaint.student.adminNo
             })
         return render(request,"teachers/viewComplaint.html",context)
