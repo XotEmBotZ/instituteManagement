@@ -42,17 +42,19 @@ def setAttendance(request):
     else:
         return JsonResponse({"status": "HttpError"})
 
-
+#TODO: Fix it
 @csrf_exempt
 def setFaceCascade(request):
     if request.method == "POST":
         try:
             jsonData = json.loads(request.body)
+            # print(jsonData)
             studentAdminNo = jsonData["adminNo"]
             studentFaceCascade = jsonData["faceCascade"]
-            studentModel = std_models.student.objects.get(adminNo=studentAdminNo)
-            faceCascadeModal = std_models.studentFaceCascade(
-                student=studentModel, cascade=json.dumps({studentFaceCascade}))
+            studentModel=std_models.student.objects.get(adminNo=studentAdminNo)
+            model,created=std_models.studentFaceCascade.objects.get_or_create(student=studentModel)
+            model.cascade=json.dumps(studentFaceCascade)
+            model.save()
             return JsonResponse({"status": "success"})
         except Exception as e:
             return JsonResponse({"status": "err","err":str(e)})
