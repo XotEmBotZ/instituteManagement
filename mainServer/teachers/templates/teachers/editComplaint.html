@@ -1,0 +1,51 @@
+{% extends 'teachers/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'teachers/css/editComplaint.css' %}">
+<script>let complaintStatus="{{complaintStatus}}"</script>
+<script src="{% static 'teachers/js/editComplaint.js' %}" defer></script>
+{% endblock head %}
+{% block main %}
+{% if msgPresent %}
+<div class="sideNote">
+    <h3>{{msg}}</h3>
+</div>
+{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Student Details</legend>
+        <label for="adminNo">AdminNo:
+            <input type="number" name="adminNo" id="adminNo" value="{{adminNo}}" disabled>
+        </label>
+        <label for="stdName">Student Name:
+            <input type="text" name="stdName" id="stdName" value="{{stdName}}" disabled>
+        </label>
+        <label for="stdClass">Student Class:
+            <input type="text" name="stdClass" id="stdClass" value="{{stdClass}}" disabled>
+        </label>
+        <label for="stdSec">Student Sec:
+            <input type="text" name="stdSec" id="stdSec" value="{{stdSec}}" disabled>
+        </label>
+    </fieldset>
+    <button type="submit">Get Details</button>
+    <fieldset>
+        <legend>Complaint</legend>
+        <label for="complaint">Complaint:
+            <textarea name="complaint" id="complaint" cols="30" rows="5">{{complaint}}</textarea>
+        </label>
+        <label for="complaintLevel">Comlpaint Status:
+            <select name="complaintStatus" id="complaintStatus">
+                <option id="opened" value="opened">Opened</option>
+                <option id="investigating" value="investigating">Investigating</option>
+                <option id="informed" value="informed">Informed</option>
+                <option id="pusnishment" value="pusnishment">Punishment</option>
+            </select>
+        </label>
+        <label for="complaintLevel">Comlpaint Level (1-5):
+            <input type="number" min=1 max=5 name="complaintLevel" id="complaintLevel" value="{{complaintLevel}}" disabled >
+        </label>
+    </fieldset>
+    <button type="submit">Submit</button>
+</form>
+{% endblock main %}
