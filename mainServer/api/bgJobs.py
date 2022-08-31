@@ -1,3 +1,4 @@
+from . import models
 from students import models as std_models
 from teachers import models as teachers_models
 import schedule
@@ -15,7 +16,8 @@ def runSchedule(interval=1):
         time.sleep(interval)
 
 def run_continuously(interval=1):
-    thread=Process.Thread(target=runSchedule,args=(interval,))
+    thread=threading.Thread(target=runSchedule,args=(interval,))
+    thread.setDaemon(True)
     thread.start()
 
 def calculateBehaviorScore():
@@ -36,4 +38,3 @@ def gainBehaviorScore():
         student.behaviorScore+=1
         student.save()
 schedule.every().day.at("12:00").minutes.do(run_threaded,gainBehaviorScore)
-
