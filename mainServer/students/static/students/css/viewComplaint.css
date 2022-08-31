@@ -34,6 +34,9 @@ td{
 .head{
     display: flex;
     margin: 1rem 0rem ;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 
 label {
@@ -43,7 +46,7 @@ label {
     margin: .5rem 0rem;
     font-size: 2rem;
     font-family: baloo2;
-    margin: 0rem 1rem;
+    margin: .5rem 1rem;
 }
 
 label input,

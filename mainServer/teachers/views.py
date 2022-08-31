@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 from . import models
@@ -115,6 +116,7 @@ class addComplaint(View):
                 complaintModel=models.teachersComplaint()
                 complaintModel.student=studentModel
                 complaintModel.complaint=request.POST.get("complaint", None)
+                complaintModel.level=request.POST.get("complaintLevel",1)
                 complaintModel.save()
                 context["msgPresent"] = True
                 context["msg"] = f"Complaint Created with ID- {complaintModel.complaintId}"
@@ -137,6 +139,39 @@ class viewComplaint(View):
                 "complaint":complaint.complaint,
                 "status":complaint.status,
                 "studentName":f"{complaint.student.firstName} {complaint.student.lastName}",
-                "studentStdSec":f"{complaint.student.std}-{complaint.student.sec}"
+                "studentStdSec":f"{complaint.student.std}-{complaint.student.sec}",
+                "complaintLevel":complaint.level,
+                "studentAdminNo":complaint.student.adminNo
             })
         return render(request,"teachers/viewComplaint.html",context)
+
+def editComplaint(request):
+    complaintId=request.GET.get("complaintId",None)
+    context={}
+    if complaintId!=None:
+        try:
+            if request.method == "POST":
+                complaint=models.teachersComplaint.objects.get(complaintId=complaintId)
+                complaintText=request.POST.get("complaint",None)
+                complaintStatus=request.POST.get("complaintStatus",None)
+                if complaintStatus!=None and complaintText!=None:
+                    complaint.complaint=complaintText
+                    complaint.status=complaintStatus
+                    complaint.save()
+                else:
+                    context["msgPresent"]=True
+                    context["msg"]="Please provide complaint text and complaint status"
+            complaint=models.teachersComplaint.objects.get(complaintId=complaintId)
+            context["adminNo"]=complaint.student.adminNo
+            context["stdName"]=complaint.student.firstName + " " + complaint.student.lastName
+            context["stdClass"]=complaint.student.std
+            context["stdSec"]=complaint.student.sec
+            context["complaint"]=complaint.complaint
+            context["complaintLevel"]=complaint.level
+            context["complaintStatus"]=complaint.status
+        except models.teachersComplaint.DoesNotExist:
+            context["msgPresent"]=True
+            context["msg"]="Invalid complaint Id"
+        return render(request,"teachers/editComplaint.html",context)
+    else:
+        return render(request,"teachers/editComplaintBase.html")

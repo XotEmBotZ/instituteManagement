@@ -8,4 +8,5 @@ urlpatterns = [
     path("updateStudent/<int:adminNo>/",views.updateStudent),
     path("addcomplaint/",views.addComplaint.as_view()),
     path("viewcomplaint/",views.viewComplaint.as_view()),
+    path("editcomplaint/",views.editComplaint)
 ]

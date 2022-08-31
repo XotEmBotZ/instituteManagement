@@ -44,6 +44,8 @@ function sortTable(n) {
 
 let searchInp=document.getElementById("search")
 let complaintIdSearch = document.getElementById("complaintId")
+let studentAdminNo = document.getElementById("stdAdminNo")
+let complaintLevel = document.getElementById("complaintLevel")
 
 searchInp.addEventListener('change',e=>{
   let rows = document.getElementsByClassName("row")
@@ -64,6 +66,32 @@ complaintIdSearch.addEventListener('change',e=>{
   console.log(searchText)
   for (row of rows){
     if (row.getElementsByTagName("td")[0].innerText==searchText){
+      row.classList.remove("dNone")
+    }else{
+      row.classList.add("dNone")
+    }
+  }
+})
+
+studentAdminNo.addEventListener('change',e=>{
+  let rows = document.getElementsByClassName("row")
+  let searchText=studentAdminNo.value
+  console.log(searchText)
+  for (row of rows){
+    if (row.getElementsByTagName("td")[1].innerText==searchText){
+      row.classList.remove("dNone")
+    }else{
+      row.classList.add("dNone")
+    }
+  }
+})
+
+complaintLevel.addEventListener('change',e=>{
+  let rows = document.getElementsByClassName("row")
+  let searchText=complaintLevel.value
+  console.log(searchText)
+  for (row of rows){
+    if (row.getElementsByTagName("td")[5].innerText==searchText){
       row.classList.remove("dNone")
     }else{
       row.classList.add("dNone")
