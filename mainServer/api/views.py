@@ -2,6 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import JsonResponse
 from students import models as std_models
+from . import models
 import json
 import datetime
 
@@ -48,7 +49,6 @@ def setFaceCascade(request):
     if request.method == "POST":
         try:
             jsonData = json.loads(request.body)
-            # print(jsonData)
             studentAdminNo = jsonData["adminNo"]
             studentFaceCascade = jsonData["faceCascade"]
             studentModel=std_models.student.objects.get(adminNo=studentAdminNo)
@@ -61,6 +61,16 @@ def setFaceCascade(request):
     else:
         return JsonResponse({"status": "HttpErr"})
 
+def recordAttendance(request):
+    try:
+        stdAdminNo=json.loads(request.body)["adminNo"]
+        stdModel=std_models.student.objects.get(adminNo=stdAdminNo)
+        models.temporaryAttendance(student=stdModel).save()
+        return JsonResponse({"status": "success"})
+    except Exception as e:
+        return JsonResponse({"status": "failed","err":str(e)},status=406)
+
 def testBgJob(request):
     bgJobs.gainBehaviorScore()
     return JsonResponse({"status": "success"})
+
