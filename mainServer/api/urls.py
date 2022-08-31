@@ -2,8 +2,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("getfacecascade/",views.getFaceCascade),    
-    path("setattendance/",views.setAttendance),    
-    path("setfacecascade/",views.setFaceCascade),  
-    path('testbgjob/',views.testBgJob)  
+    #* V1
+    path("v1/getfacecascade/",views.getFaceCascade),    
+    path("v1/setattendance/",views.setAttendance),    
+    path("v1/setfacecascade/",views.setFaceCascade),  
+    path('v1/testbgjob/',views.testBgJob),
+    #* V2
+    path("v2/recordAttendance",views.recordAttendance),
 ]
