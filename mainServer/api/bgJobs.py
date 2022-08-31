@@ -1,6 +1,7 @@
 from . import models
 from students import models as std_models
 from teachers import models as teachers_models
+import datetime
 import schedule
 from multiprocessing import Process
 import threading
@@ -38,3 +39,7 @@ def gainBehaviorScore():
         student.behaviorScore+=1
         student.save()
 schedule.every().day.at("12:00").minutes.do(run_threaded,gainBehaviorScore)
+
+def deleteOldComplaint():
+    teachers_models.teachersComplaint.objects.filter(date_lte=datetime.date()-datetime.timedelta(days=360)).delete()
+schedule.every().day.at("12:00").do(run_threaded,deleteOldComplaint)
