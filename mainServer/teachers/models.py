@@ -6,7 +6,6 @@ class teachersComplaint(models.Model):
     statusChoices=[
         ("opened","Opened"),
         ("investigating","Invistigating Complaint"),
-        ("infromed","Informed the respective authorities"),
         ("punishment","Punishment Giving")
     ]
     complaintId=models.BigAutoField(primary_key=True)
