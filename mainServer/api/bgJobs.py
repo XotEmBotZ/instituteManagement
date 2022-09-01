@@ -22,7 +22,7 @@ def run_continuously(interval=1):
     thread.start()
 
 def calculateBehaviorScore():
-    allComplaint=teachers_models.teachersComplaint.objects.filter(isChecked=False)
+    allComplaint=teachers_models.teachersComplaint.objects.filter(isChecked=False,status="punishment")
     for complaint in allComplaint:
         stdModel=complaint.student
         stdModel.behaviorScore-=complaint.level*10
@@ -38,8 +38,8 @@ def gainBehaviorScore():
     for student in allStudents:
         student.behaviorScore+=1
         student.save()
-schedule.every().day.at("12:00").minutes.do(run_threaded,gainBehaviorScore)
+schedule.every().day.at("12:00").do(run_threaded,gainBehaviorScore)
 
 def deleteOldComplaint():
-    teachers_models.teachersComplaint.objects.filter(date_lte=datetime.date()-datetime.timedelta(days=360)).delete()
+    teachers_models.teachersComplaint.objects.filter(date_lte=datetime.date()-datetime.timedelta(days=360),status="punishment").delete()
 schedule.every().day.at("12:00").do(run_threaded,deleteOldComplaint)
