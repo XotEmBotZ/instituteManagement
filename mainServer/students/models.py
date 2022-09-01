@@ -15,13 +15,13 @@ class student(models.Model):
     def __str__(self) -> str:
         return f"{self.adminNo}-{self.firstName} {self.lastName} - {self.std}{self.sec}"
 
-class parent(models.Model):
-    student=models.ForeignKey(student, on_delete=models.CASCADE)
-    firstName = models.CharField(max_length=15)
-    lastName = models.CharField(max_length=25)
-    dob=models.DateField()
-    phNo=models.IntegerField()
-    occupation=models.TextField()
+# class parent(models.Model):
+#     student=models.ForeignKey(student, on_delete=models.CASCADE)
+#     firstName = models.CharField(max_length=15)
+#     lastName = models.CharField(max_length=25)
+#     dob=models.DateField()
+#     phNo=models.IntegerField()
+#     occupation=models.TextField()
 
 class studentFaceCascade(models.Model):
     student=models.ForeignKey(student,on_delete=models.CASCADE)
