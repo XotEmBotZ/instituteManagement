@@ -1,11 +1,17 @@
-import re
 import face_recognition
 import cv2
 import mediapipe
-import config
 import json
 import requests
 import threading
+
+
+WEBCAM_INDEX=0
+SERVER_URL_GET="http://localhost:8000/api/v1/getfacecascade/"
+SERVER_URL_POST="http://localhost:8000/api/v2/recordAttendance"
+
+with open("./config.py", "r") as f:
+    exec(f.read())
 
 def runThreaded(func, *args, **kwargs):
     print(args)
@@ -14,13 +20,9 @@ def runThreaded(func, *args, **kwargs):
 
 def sendAttendance(adminNo):
     print(json.dumps({"adminNo":adminNo}))
-    requests.post(config.SERVER_URL_POST,data=json.dumps({"adminNo":adminNo}))
+    requests.post(SERVER_URL_POST,data=json.dumps({"adminNo":adminNo}))
 
-if config.ASK_VALUES_ON_STARTUP:
-    serverUrl=input("Server URL:")
-    sercerSecret=input("Server Secret")
-
-cascades=requests.get(config.SERVER_URL_GET).json()
+cascades=requests.get(SERVER_URL_GET).json()
 
 stdAdminNo=[]
 stdKnownFaceCascade=[]
@@ -35,7 +37,7 @@ mp_face_detection=mediapipe.solutions.face_detection
 faceDetection=mp_face_detection.FaceDetection(model_selection=0, min_detection_confidence=0.75)
 
 
-video=cv2.VideoCapture(config.WEBCAM_INDEX)
+video=cv2.VideoCapture(WEBCAM_INDEX)
 frameWidth=video.get(cv2.CAP_PROP_FRAME_WIDTH)
 frameHeight=video.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
