@@ -4,7 +4,5 @@ urlpatterns=[
     #GUI
     path("",views.index),
     path("viewcomplaint/",views.viewComplaint.as_view()),
-    # API
-    path("api/studentCascade/",views.faceCascade.as_view()),
-    path("api/studentAttendance/",views.studentAttendance.as_view()),
+    path("viewstudent/",views.viewStudent),
 ]

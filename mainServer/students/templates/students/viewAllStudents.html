@@ -1,0 +1,73 @@
+{% extends 'students/base.html' %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'students/css/viewAllStudents.css' %}">
+<script src="{% static 'students/js/viewAllStudents.js' %}"></script>
+{% endblock head %}
+
+{% block main %}
+{% if msgPresent %}
+<h1 id="msg">{{msg}}</h1>
+{% endif %}
+
+<form action="" method="get" id="directViewStudentForm">
+    <fieldset>
+        <legend>View student with AdminNo</legend>
+        <label for="adminNo">AdminNo:
+            <input type="number" name="adminNo" id="adminNo">
+        </label>
+        <button type="submit">View Student Details</button>
+    </fieldset>
+</form>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Filter Students</legend>
+        <label for="stdStd">Standard:
+            <input type="number" name="stdStd" id="stdStd">
+        </label>
+        <label for="stdSec">Section:
+            <input type="text" name="stdSec" id="stdSec">
+        </label>
+        <label for="stdBehaviroScoreUpperLimit">Behavior Score UpperLimit:
+            <input type="number" name="stdBehaviroScoreUpperLimit" id="stdBehaviroScoreUpperLimit">
+        </label>
+        <label for="stdBehaviroScoreLowerLimit">Behavior Score LowerLimit:
+            <input type="number" name="stdBehaviroScoreLowerLimit" id="stdBehaviroScoreLowerLimit">
+        </label>
+        <button type="submit">Filter</button>
+    </fieldset>
+</form>
+
+<section id="std">
+    <table id="table">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Sl. No.</th>
+                <th onclick="sortTable(1)">AdminNo</th>
+                <th onclick="sortTable(2)">Frist Name</th>
+                <th onclick="sortTable(3)">Last Name</th>
+                <th onclick="sortTable(4)">Standard</th>
+                <th onclick="sortTable(5)">Section</th>
+                <th onclick="sortTable(6)">BehaviorScore</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for std in stdModels %}
+            <tr class="stdInfo" onclick="redirectStd({{std.adminNo}})">
+                <td>{{ forloop.counter }}</td>
+                <td>{{std.adminNo}}</td>
+                <td>{{std.firstName}}</td>
+                <td>{{std.LastName}}</td>
+                <td>{{std.std}}</td>
+                <td>{{std.sec}}</td>
+                <td>{{std.behaviorScore}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock main %}

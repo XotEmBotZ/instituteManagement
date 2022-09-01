@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 from . import models
@@ -8,6 +9,7 @@ from students import models as stdModels
 
 def index(request):
     return render(request, "teachers/index.html")
+
 
 def addStudent(request):
     context = {}
@@ -107,15 +109,17 @@ class addComplaint(View):
                 studentModel.lastName if studentAdminNo != None else ""
             context["stdClass"] = studentModel.std if studentAdminNo != None else ""
             context["stdSec"] = studentModel.sec if studentAdminNo != None else ""
-            context["stdDetailsCheck"]=True
-            isVerifiedStudent=request.POST.get("studentDetailsCheck", None)=="True"
+            context["stdDetailsCheck"] = True
+            isVerifiedStudent = request.POST.get(
+                "studentDetailsCheck", None) == "True"
             if isVerifiedStudent:
                 studentAdminNo = request.POST.get("adminNo", None)
-                studentModel=stdModels.student.objects.get(adminNo=studentAdminNo)
-                complaintModel=models.teachersComplaint()
-                complaintModel.student=studentModel
-                complaintModel.complaint=request.POST.get("complaint", None)
-                complaintModel.level=request.POST.get("complaintLevel",1)
+                studentModel = stdModels.student.objects.get(
+                    adminNo=studentAdminNo)
+                complaintModel = models.teachersComplaint()
+                complaintModel.student = studentModel
+                complaintModel.complaint = request.POST.get("complaint", None)
+                complaintModel.level = request.POST.get("complaintLevel", 1)
                 complaintModel.save()
                 context["msgPresent"] = True
                 context["msg"] = f"Complaint Created with ID- {complaintModel.complaintId}"
@@ -128,18 +132,101 @@ class addComplaint(View):
             context["msg"] = "Student Details Not Found!"
         return render(request, "teachers/addComplaint.html", context)
 
+
 class viewComplaint(View):
-    def get(self,request):
-        context={"allComplaint":[]}
-        allComplaints=models.teachersComplaint.objects.all()
+    def get(self, request):
+        context = {"allComplaint": []}
+        allComplaints = models.teachersComplaint.objects.all()
         for complaint in allComplaints:
             context["allComplaint"].append({
-                "complaintId":complaint.complaintId,
-                "complaint":complaint.complaint,
-                "status":complaint.status,
-                "studentName":f"{complaint.student.firstName} {complaint.student.lastName}",
-                "studentStdSec":f"{complaint.student.std}-{complaint.student.sec}",
-                "complaintLevel":complaint.level,
-                "studentAdminNo":complaint.student.adminNo
+                "complaintId": complaint.complaintId,
+                "complaint": complaint.complaint,
+                "status": complaint.status,
+                "studentName": f"{complaint.student.firstName} {complaint.student.lastName}",
+                "studentStdSec": f"{complaint.student.std}-{complaint.student.sec}",
+                "complaintLevel": complaint.level,
+                "studentAdminNo": complaint.student.adminNo
             })
-        return render(request,"teachers/viewComplaint.html",context)
+        return render(request, "teachers/viewComplaint.html", context)
+
+
+def editComplaint(request):
+    complaintId = request.GET.get("complaintId", None)
+    context = {}
+    if complaintId != None:
+        try:
+            if request.method == "POST":
+                complaint = models.teachersComplaint.objects.get(
+                    complaintId=complaintId)
+                complaintText = request.POST.get("complaint", None)
+                complaintStatus = request.POST.get("complaintStatus", None)
+                if complaintStatus != None and complaintText != None:
+                    complaint.complaint = complaintText
+                    complaint.status = complaintStatus
+                    complaint.save()
+                else:
+                    context["msgPresent"] = True
+                    context["msg"] = "Please provide complaint text and complaint status"
+            complaint = models.teachersComplaint.objects.get(
+                complaintId=complaintId)
+            context["adminNo"] = complaint.student.adminNo
+            context["stdName"] = complaint.student.firstName + \
+                " " + complaint.student.lastName
+            context["stdClass"] = complaint.student.std
+            context["stdSec"] = complaint.student.sec
+            context["complaint"] = complaint.complaint
+            context["complaintLevel"] = complaint.level
+            context["complaintStatus"] = complaint.status
+        except models.teachersComplaint.DoesNotExist:
+            context["msgPresent"] = True
+            context["msg"] = "Invalid complaint Id"
+        return render(request, "teachers/editComplaint.html", context)
+    else:
+        return render(request, "teachers/editComplaintBase.html")
+
+
+def viewStudent(request):
+    context = {}
+    adminNo = request.GET.get("adminNo", None)
+    if adminNo:
+        try:
+            stdModel = stdModels.student.objects.get(adminNo=adminNo)
+            context["stdName"] = f"{stdModel.firstName} {stdModel.lastName}"
+            context["stdStd"] = stdModel.std
+            context["stdSec"] = stdModel.sec
+            context["stdDob"] = stdModel.dob
+            context["stdAddress"] = stdModel.address
+            context["stdJoiningDate"] = stdModel.joiningDate
+            context["stdBehaviorScore"] = stdModel.behaviorScore
+            if stdModel.behaviorScore >= 0 and stdModel.behaviorScore < 33:
+                context["behaviorClass"] = "cRed"
+            elif stdModel.behaviorScore >= 33 and stdModel.behaviorScore < 66:
+                context["behaviorClass"] = "cYellow"
+            elif stdModel.behaviorScore >= 66:
+                context["behaviorClass"] = "cGreen"
+            context["stdFound"] = True
+        except models.student.DoesNotExist:
+            context["msgPresent"] = True
+            context["msg"] = "Student not found. Please check the adminNo"
+        return render(request, "students/viewStudent.html", context)
+    else:
+        stdModels1 = stdModels.student.objects.all()
+        if request.method == "POST":
+            stdStd = request.POST.get("stdStd", None)
+            stdSec = request.POST.get("stdSec", None)
+            stdBehaviroScoreUpperLimit = request.POST.get(
+                "stdBehaviroScoreUpperLimit", None)
+            stdBehaviroScoreLowerLimit = request.POST.get(
+                "stdBehaviroScoreLowerLimit", None)
+            if stdStd:
+                stdModels1 = stdModels1.filter(std=(stdStd))
+            if stdSec:
+                stdModels1 = stdModels1.filter(sec=stdSec)
+            if stdBehaviroScoreUpperLimit:
+                stdModels1 = stdModels1.filter(
+                    behaviorScore__lte=stdBehaviroScoreUpperLimit)
+            if stdBehaviroScoreLowerLimit:
+                stdModels1 = stdModels1.filter(
+                    behaviorScore__gte=stdBehaviroScoreLowerLimit)
+        context["stdModels"] = stdModels1
+        return render(request, "teachers/viewAllStudents.html", context)
