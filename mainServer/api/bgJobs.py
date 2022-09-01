@@ -38,7 +38,7 @@ def gainBehaviorScore():
     for student in allStudents:
         student.behaviorScore+=1
         student.save()
-schedule.every().day.at("12:00").minutes.do(run_threaded,gainBehaviorScore)
+schedule.every().day.at("12:00").do(run_threaded,gainBehaviorScore)
 
 def deleteOldComplaint():
     teachers_models.teachersComplaint.objects.filter(date_lte=datetime.date()-datetime.timedelta(days=360),status="punishment").delete()
