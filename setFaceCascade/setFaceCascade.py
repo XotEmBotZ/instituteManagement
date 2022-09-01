@@ -1,5 +1,3 @@
-from base64 import encode
-from multiprocessing.connection import wait
 import mediapipe
 import face_recognition
 import cv2
