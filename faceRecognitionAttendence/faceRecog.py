@@ -13,7 +13,8 @@ def runThreaded(func, *args, **kwargs):
     thread.start()
 
 def sendAttendance(adminNo):
-    requests.post(config.SERVER_URL_POST,json=json.dumps({"adminNo":adminNo}))
+    print(json.dumps({"adminNo":adminNo}))
+    requests.post(config.SERVER_URL_POST,data=json.dumps({"adminNo":adminNo}))
 
 if config.ASK_VALUES_ON_STARTUP:
     serverUrl=input("Server URL:")
