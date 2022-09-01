@@ -1,10 +1,19 @@
+import re
 import face_recognition
 import cv2
-import time
 import mediapipe
 import config
 import json
 import requests
+import threading
+
+def runThreaded(func, *args, **kwargs):
+    print(args)
+    thread=threading.Thread(target=func, args=args , kwargs=kwargs)
+    thread.start()
+
+def sendAttendance(adminNo):
+    requests.post(config.SERVER_URL_POST,json=json.dumps({"adminNo":adminNo}))
 
 if config.ASK_VALUES_ON_STARTUP:
     serverUrl=input("Server URL:")
@@ -50,21 +59,13 @@ while True:
         for faceEnc in faceEncoding:
             compareFace=face_recognition.compare_faces(stdKnownFaceCascade,faceEnc)
             faceDistance=face_recognition.face_distance(stdKnownFaceCascade,faceEnc)
-            if compareFace[faceDistance.argmin()]:
-                presentStd.update(stdAdminNo[faceDistance.argmin()])
+            if compareFace[faceDistance.argmin()] and not stdAdminNo[faceDistance.argmin()] in presentStd :
+                presentStd.add(stdAdminNo[faceDistance.argmin()])
+                runThreaded(sendAttendance,adminNo=stdAdminNo[faceDistance.argmin()])
 
     cv2.imshow('Video', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-presentStd.remove("NaN")
-for std in presentStd:
-    stdAdminNo.remove(std)
-absentStd=stdAdminNo
-data={
-    "absentStudents":absentStd,
-}
-print(requests.post(config.SERVER_URL_POST,data=json.dumps(data)).status_code)
 
 video.release()
 cv2.destroyAllWindows()
