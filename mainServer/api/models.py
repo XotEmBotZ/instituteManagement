@@ -9,4 +9,4 @@ class errs(models.Model):
 
 class temporaryAttendance(models.Model):
     student=models.ForeignKey(student,on_delete=models.CASCADE)
-    datetime=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
