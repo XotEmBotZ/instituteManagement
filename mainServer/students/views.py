@@ -1,12 +1,8 @@
 from django.shortcuts import render
 from django.views import View
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from . import models
 from teachers import models as teachersModels
-import json
-import datetime
 
 # Create your views here.
 def index(request):
@@ -49,10 +45,25 @@ def viewStudent(request):
                 context["behaviorClass"]="cYellow"
             elif stdModel.behaviorScore>=66:
                 context["behaviorClass"]="cGreen"
+            context["stdFound"]=True
         except models.student.DoesNotExist:
             context["msgPresent"]=True
             context["msg"]="Student not found. Please check the adminNo"
         return render(request, "students/viewStudent.html",context)
-    # else:
-    #     return render(request, "students/viewStudent.html",)
-    return JsonResponse({"Status":"success"})
+    else:
+        stdModels=models.student.objects.all()
+        if request.method == "POST":
+            stdStd=request.POST.get("stdStd",None)
+            stdSec=request.POST.get("stdSec",None)
+            stdBehaviroScoreUpperLimit=request.POST.get("stdBehaviroScoreUpperLimit",None)
+            stdBehaviroScoreLowerLimit=request.POST.get("stdBehaviroScoreLowerLimit",None)
+            if stdStd:
+                stdModels=stdModels.filter(std=(stdStd))
+            if stdSec:
+                stdModels=stdModels.filter(sec=stdSec)
+            if stdBehaviroScoreUpperLimit:
+                stdModels=stdModels.filter(behaviorScore__lte=stdBehaviroScoreUpperLimit)
+            if stdBehaviroScoreLowerLimit:
+                stdModels=stdModels.filter(behaviorScore__gte=stdBehaviroScoreLowerLimit)
+        context["stdModels"]=stdModels
+        return render(request, "students/viewAllStudents.html",context)

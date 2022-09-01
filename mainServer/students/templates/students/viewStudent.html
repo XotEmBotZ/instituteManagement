@@ -3,13 +3,13 @@
 {% block head %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'students/css/viewstudent.css' %}">
-<script defer src="{% static 'students/js/viewstudent.js' %}"></script>
 {% endblock head %}
 
 {% block main %}
 {% if msgPresent %}
 <h1 id="msg">{{msg}}</h1>
 {% endif %}
+{% if stdFound %}
 <h1 id="studentName">Student Name: {{stdName}}</h1>
 <div class="studentDetails">
     <p id="stdClass" class="stdDetails">Student standard: {{stdStd}}</p>
@@ -19,4 +19,5 @@
     <p id="stdJoiningDate" class="stdDetails">Student Joining Date: {{stdJoiningDate}}</p>
     <h3 id="stdBehaviorScore" class="stdDetails ">Student Behavior Score: <span id="behaviorScore" class="{{behaviorClass}}">{{stdBehaviorScore}}</span></h3>
 </div>
+{% endif %}
 {% endblock main %}
