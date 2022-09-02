@@ -1,16 +1,28 @@
 import face_recognition
 import cv2
-import time
 import mediapipe
-import config
 import json
 import requests
+import threading
 
-if config.ASK_VALUES_ON_STARTUP:
-    serverUrl=input("Server URL:")
-    sercerSecret=input("Server Secret")
 
-cascades=requests.get(config.SERVER_URL_GET).json()
+WEBCAM_INDEX=0
+SERVER_URL_GET="http://localhost:8000/api/v1/getfacecascade/"
+SERVER_URL_POST="http://localhost:8000/api/v2/recordAttendance"
+
+with open("./config.py", "r") as f:
+    exec(f.read())
+
+def runThreaded(func, *args, **kwargs):
+    print(args)
+    thread=threading.Thread(target=func, args=args , kwargs=kwargs)
+    thread.start()
+
+def sendAttendance(adminNo):
+    print(json.dumps({"adminNo":adminNo}))
+    requests.post(SERVER_URL_POST,data=json.dumps({"adminNo":adminNo}))
+
+cascades=requests.get(SERVER_URL_GET).json()
 
 stdAdminNo=[]
 stdKnownFaceCascade=[]
@@ -25,7 +37,7 @@ mp_face_detection=mediapipe.solutions.face_detection
 faceDetection=mp_face_detection.FaceDetection(model_selection=0, min_detection_confidence=0.75)
 
 
-video=cv2.VideoCapture(config.WEBCAM_INDEX)
+video=cv2.VideoCapture(WEBCAM_INDEX)
 frameWidth=video.get(cv2.CAP_PROP_FRAME_WIDTH)
 frameHeight=video.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
@@ -50,21 +62,13 @@ while True:
         for faceEnc in faceEncoding:
             compareFace=face_recognition.compare_faces(stdKnownFaceCascade,faceEnc)
             faceDistance=face_recognition.face_distance(stdKnownFaceCascade,faceEnc)
-            if compareFace[faceDistance.argmin()]:
-                presentStd.update(stdAdminNo[faceDistance.argmin()])
+            if compareFace[faceDistance.argmin()] and not stdAdminNo[faceDistance.argmin()] in presentStd :
+                presentStd.add(stdAdminNo[faceDistance.argmin()])
+                runThreaded(sendAttendance,adminNo=stdAdminNo[faceDistance.argmin()])
 
     cv2.imshow('Video', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-presentStd.remove("NaN")
-for std in presentStd:
-    stdAdminNo.remove(std)
-absentStd=stdAdminNo
-data={
-    "absentStudents":absentStd,
-}
-print(requests.post(config.SERVER_URL_POST,data=json.dumps(data)).status_code)
 
 video.release()
 cv2.destroyAllWindows()

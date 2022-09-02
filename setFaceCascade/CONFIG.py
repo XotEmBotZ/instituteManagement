@@ -1,2 +1,5 @@
 WEBCAM_INDEX = 0
-SERVER_URL="https://127.0.0.1:80)0/api/setfacecascade/"
+WEBCAM_CHANGE_RESOLUTION=False
+WEBCAM_WIDTH=1280
+WEBCAM_HEIGHT=720
+SERVER_URL="http://127.0.0.1:8000/api/v1/setfacecascade/"
