@@ -27,7 +27,7 @@ form label textarea {
     margin-left: 1rem;
     outline: none;
     border: none;
-    background-color: var(--other1C);
+    background-color: var(--tirtiaryC);
     padding: .5rem 1rem;
     border-radius: 1rem;
 }
@@ -39,7 +39,7 @@ form label textarea {
 form button{
     outline: none;
     border: none;
-    background-color: var(--secondaryC);
+    background-color: var(--otherC);
     padding: 1rem 1rem;
     border-radius: 1rem;
     font-family: comfortaa;
@@ -47,7 +47,7 @@ form button{
     margin-left: 1rem;
     display: block;
     width: max-content;
-    color: var(--text1C);
+    color: var(--secondaryC);
     margin-top: 1rem;
 }
 

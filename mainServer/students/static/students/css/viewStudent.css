@@ -14,7 +14,8 @@ main{
 
 .studentDetails{
     margin: .5rem;
-    border: 2px solid var(--secondaryC);
+    border: 2px solid var(--tirtiaryC);
+    background-color: var(--primaryC);
     width: max-content;
     padding: 1rem;
     border-radius: 1rem;
