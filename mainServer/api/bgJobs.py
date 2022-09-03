@@ -1,6 +1,6 @@
 from . import models
 from students import models as std_models
-from teachers import models as teachers_models
+from authority import models as authorityModels
 import datetime
 import schedule
 from multiprocessing import Process
@@ -22,7 +22,7 @@ def run_continuously(interval=1):
     thread.start()
 
 def calculateBehaviorScore():
-    allComplaint=teachers_models.teachersComplaint.objects.filter(isChecked=False,status="punishment")
+    allComplaint=authorityModels.authorityComplaint.objects.filter(isChecked=False,status="punishment")
     for complaint in allComplaint:
         stdModel=complaint.student
         stdModel.behaviorScore-=complaint.level*10
@@ -41,7 +41,7 @@ def gainBehaviorScore():
 schedule.every().day.at("12:00").do(run_threaded,gainBehaviorScore)
 
 def deleteOldComplaint():
-    teachers_models.teachersComplaint.objects.filter(date_lte=datetime.date.today()-datetime.timedelta(days=360),status="punishment").delete()
+    authorityModels.authorityComplaint.objects.filter(date_lte=datetime.date.today()-datetime.timedelta(days=360),status="punishment").delete()
 schedule.every().day.at("12:00").do(run_threaded,deleteOldComplaint)
 
 def calculateAttendance():

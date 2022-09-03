@@ -1,9 +1,9 @@
-{% extends 'teachers/base.html' %}
+{% extends 'authority/base.html' %}
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'teachers/css/editComplaint.css' %}">
+<link rel="stylesheet" href="{% static 'authority/css/editComplaint.css' %}">
 <script>let complaintStatus="{{complaintStatus}}"</script>
-<script src="{% static 'teachers/js/editComplaint.js' %}" defer></script>
+<script src="{% static 'authority/js/editComplaint.js' %}" defer></script>
 {% endblock head %}
 {% block main %}
 {% if msgPresent %}

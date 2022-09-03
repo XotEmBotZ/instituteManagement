@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'students.apps.StudentsConfig',
-    'teachers.apps.TeachersConfig',
+    'authority.apps.AuthorityConfig',
     'api.apps.ApiConfig'
 ]
 

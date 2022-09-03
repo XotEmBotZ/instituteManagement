@@ -2,7 +2,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from students import models as stdModels
 # Create your models here.
-class teachersComplaint(models.Model):
+class authorityComplaint(models.Model):
     statusChoices=[
         ("opened","Opened"),
         ("investigating","Invistigating Complaint"),

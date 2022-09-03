@@ -8,7 +8,7 @@ from students import models as stdModels
 
 
 def index(request):
-    return render(request, "teachers/index.html")
+    return render(request, "authority/index.html")
 
 
 def addStudent(request):
@@ -34,12 +34,12 @@ def addStudent(request):
         except Exception as e:
             context = {}
             context["err"] = e
-            return render(request, "teachers/err.html", context)
-    return render(request, "teachers/addStudent.html", context)
+            return render(request, "authority/err.html", context)
+    return render(request, "authority/addStudent.html", context)
 
 
 def updateStudentFirst(request):
-    return render(request, "teachers/updateStudentFirst.html")
+    return render(request, "authority/updateStudentFirst.html")
 
 
 def updateStudent(request, adminNo):
@@ -88,7 +88,7 @@ def updateStudent(request, adminNo):
     if not processed:
         context["err"] = err
     context["msg"] = msg
-    return render(request, "teachers/updateStudent.html", context)
+    return render(request, "authority/updateStudent.html", context)
 
 
 class addComplaint(View):
@@ -96,7 +96,7 @@ class addComplaint(View):
         context = {
             "stdDetailsCheck": False
         }
-        return render(request, "teachers/addComplaint.html", context)
+        return render(request, "authority/addComplaint.html", context)
 
     def post(self, request):
         context = {}
@@ -116,7 +116,7 @@ class addComplaint(View):
                 studentAdminNo = request.POST.get("adminNo", None)
                 studentModel = stdModels.student.objects.get(
                     adminNo=studentAdminNo)
-                complaintModel = models.teachersComplaint()
+                complaintModel = models.authorityComplaint()
                 complaintModel.student = studentModel
                 complaintModel.complaint = request.POST.get("complaint", None)
                 complaintModel.level = request.POST.get("complaintLevel", 1)
@@ -130,13 +130,13 @@ class addComplaint(View):
             studentAdminNo = None
             context["msgPresent"] = True
             context["msg"] = "Student Details Not Found!"
-        return render(request, "teachers/addComplaint.html", context)
+        return render(request, "authority/addComplaint.html", context)
 
 
 class viewComplaint(View):
     def get(self, request):
         context = {"allComplaint": []}
-        allComplaints = models.teachersComplaint.objects.all()
+        allComplaints = models.authorityComplaint.objects.all()
         for complaint in allComplaints:
             context["allComplaint"].append({
                 "complaintId": complaint.complaintId,
@@ -147,7 +147,7 @@ class viewComplaint(View):
                 "complaintLevel": complaint.level,
                 "studentAdminNo": complaint.student.adminNo
             })
-        return render(request, "teachers/viewComplaint.html", context)
+        return render(request, "authority/viewComplaint.html", context)
 
 
 def editComplaint(request):
@@ -156,7 +156,7 @@ def editComplaint(request):
     if complaintId != None:
         try:
             if request.method == "POST":
-                complaint = models.teachersComplaint.objects.get(
+                complaint = models.authorityComplaint.objects.get(
                     complaintId=complaintId)
                 complaintText = request.POST.get("complaint", None)
                 complaintStatus = request.POST.get("complaintStatus", None)
@@ -167,7 +167,7 @@ def editComplaint(request):
                 else:
                     context["msgPresent"] = True
                     context["msg"] = "Please provide complaint text and complaint status"
-            complaint = models.teachersComplaint.objects.get(
+            complaint = models.authorityComplaint.objects.get(
                 complaintId=complaintId)
             context["adminNo"] = complaint.student.adminNo
             context["stdName"] = complaint.student.firstName + \
@@ -177,12 +177,12 @@ def editComplaint(request):
             context["complaint"] = complaint.complaint
             context["complaintLevel"] = complaint.level
             context["complaintStatus"] = complaint.status
-        except models.teachersComplaint.DoesNotExist:
+        except models.authorityComplaint.DoesNotExist:
             context["msgPresent"] = True
             context["msg"] = "Invalid complaint Id"
-        return render(request, "teachers/editComplaint.html", context)
+        return render(request, "authority/editComplaint.html", context)
     else:
-        return render(request, "teachers/editComplaintBase.html")
+        return render(request, "authority/editComplaintBase.html")
 
 
 def viewStudent(request):
@@ -208,7 +208,7 @@ def viewStudent(request):
         except models.student.DoesNotExist:
             context["msgPresent"] = True
             context["msg"] = "Student not found. Please check the adminNo"
-        return render(request, "students/viewStudent.html", context)
+        return render(request, "authority/viewStudent.html", context)
     else:
         stdModels1 = stdModels.student.objects.all()
         if request.method == "POST":
@@ -229,4 +229,4 @@ def viewStudent(request):
                 stdModels1 = stdModels1.filter(
                     behaviorScore__gte=stdBehaviroScoreLowerLimit)
         context["stdModels"] = stdModels1
-        return render(request, "teachers/viewAllStudents.html", context)
+        return render(request, "authority/viewAllStudents.html", context)

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse, HttpResponse
 from . import models
-from teachers import models as teachersModels
+from authority import models as authorityModels
 
 # Create your views here.
 def index(request):
@@ -12,7 +12,7 @@ def index(request):
 class viewComplaint(View):
     def get(self, request):
         context = {"allComplaint": []}
-        allComplaints = teachersModels.teachersComplaint.objects.all()
+        allComplaints = authorityModels.authorityComplaint.objects.all()
         for complaint in allComplaints:
             context["allComplaint"].append({
                 "complaintId": complaint.complaintId,
