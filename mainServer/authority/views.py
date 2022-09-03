@@ -205,7 +205,7 @@ def viewStudent(request):
             elif stdModel.behaviorScore >= 66:
                 context["behaviorClass"] = "cGreen"
             context["stdFound"] = True
-        except models.student.DoesNotExist:
+        except stdModels.student.DoesNotExist:
             context["msgPresent"] = True
             context["msg"] = "Student not found. Please check the adminNo"
         return render(request, "authority/viewStudent.html", context)
