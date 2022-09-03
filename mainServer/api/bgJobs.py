@@ -41,5 +41,12 @@ def gainBehaviorScore():
 schedule.every().day.at("12:00").do(run_threaded,gainBehaviorScore)
 
 def deleteOldComplaint():
-    teachers_models.teachersComplaint.objects.filter(date_lte=datetime.date()-datetime.timedelta(days=360),status="punishment").delete()
+    teachers_models.teachersComplaint.objects.filter(date_lte=datetime.date.today()-datetime.timedelta(days=360),status="punishment").delete()
+schedule.every().day.at("12:00").do(run_threaded,deleteOldComplaint)
+
+def calculateAttendance():
+    allPresentStd=models.temporaryAttendance.objects.filter(date=datetime.date.today())
+    allAbsentStd=std_models.student.objects.all().exclude(student=allPresentStd)
+    for std in allAbsentStd:
+        std_models.studentAttendanceAbsentStudent(student=std).save()
 schedule.every().day.at("12:00").do(run_threaded,deleteOldComplaint)
