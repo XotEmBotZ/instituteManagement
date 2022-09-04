@@ -1,3 +1,4 @@
+from email.policy import default
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -12,16 +13,10 @@ class student(models.Model):
     address=models.TextField()
     joiningDate=models.DateField(auto_now_add=True)
     behaviorScore=models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)],default=100)
+    gainBehaviorScore=models.BooleanField(default=True)
+    
     def __str__(self) -> str:
         return f"{self.adminNo}-{self.firstName} {self.lastName} - {self.std}{self.sec}"
-
-# class parent(models.Model):
-#     student=models.ForeignKey(student, on_delete=models.CASCADE)
-#     firstName = models.CharField(max_length=15)
-#     lastName = models.CharField(max_length=25)
-#     dob=models.DateField()
-#     phNo=models.IntegerField()
-#     occupation=models.TextField()
 
 class studentFaceCascade(models.Model):
     student=models.ForeignKey(student,on_delete=models.CASCADE)

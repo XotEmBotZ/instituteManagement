@@ -1,3 +1,4 @@
+from datetime import date
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from students import models as stdModels
@@ -19,3 +20,8 @@ class authorityComplaint(models.Model):
     def __str__(self):
         return f"{self.student.firstName}-{self.student.adminNo}-{self.complaint[:5]}-{self.status}"
 
+class authorityBehaviorNotice(models.Model):
+    student=models.ForeignKey(stdModels.student,on_delete=models.CASCADE)
+    furtherNotified=models.BooleanField(default=False)
+    isChecked=models.BooleanField(default=False)
+    date=models.DateField(auto_now_add=True)
