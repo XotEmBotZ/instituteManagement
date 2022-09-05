@@ -18,6 +18,29 @@
     <p id="stdAddress" class="stdDetails">Student Address: {{stdAddress}}</p>
     <p id="stdJoiningDate" class="stdDetails">Student Joining Date: {{stdJoiningDate}}</p>
     <h3 id="stdBehaviorScore" class="stdDetails ">Student Behavior Score: <span id="behaviorScore" class="{{behaviorClass}}">{{stdBehaviorScore}}</span></h3>
+    {% if behaviorNoticePresent %}
+    <div class="behaviorNotice">
+        <h2>BehaviorNotices:-</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Date Issued</th>
+                    <th>Further Notified</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bNotice in behaviorNotices %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{bNotice.date}}</td>
+                    <td>{{bNotice.furtherNotified}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock main %}

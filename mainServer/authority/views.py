@@ -1,3 +1,5 @@
+from multiprocessing import context
+from operator import mod
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
@@ -205,6 +207,12 @@ def viewStudent(request):
             elif stdModel.behaviorScore >= 66:
                 context["behaviorClass"] = "cGreen"
             context["stdFound"] = True
+            behaviorNotices=models.authorityBehaviorNotice.objects.filter(student=stdModel)
+            if len(behaviorNotices) > 0:
+                context["behaviorNotices"]=behaviorNotices
+                context["behaviorNoticePresent"]=True
+            else:
+                context["behaviorNoticePresent"]=False
         except stdModels.student.DoesNotExist:
             context["msgPresent"] = True
             context["msg"] = "Student not found. Please check the adminNo"
@@ -230,3 +238,7 @@ def viewStudent(request):
                     behaviorScore__gte=stdBehaviroScoreLowerLimit)
         context["stdModels"] = stdModels1
         return render(request, "authority/viewAllStudents.html", context)
+
+# def editBehaviorNotice(request):
+#     context = {}
+#     return render(request, "authority/editBehaviorNotice.html", context)

@@ -34,7 +34,7 @@
     </thead>
     <tbody>
         {% for complaint in allComplaint %}
-        <tr class="row">
+        <tr class="row" onclick="window.location.href='/authority/editcomplaint/?complaintId={{complaint.complaintId}}'">
             <td>{{complaint.complaintId}}</td>
             <td>{{complaint.studentAdminNo}}</td>
             <td>{{complaint.studentName}}</td>
