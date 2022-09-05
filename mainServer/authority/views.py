@@ -239,6 +239,19 @@ def viewStudent(request):
         context["stdModels"] = stdModels1
         return render(request, "authority/viewAllStudents.html", context)
 
-# def editBehaviorNotice(request):
-#     context = {}
-#     return render(request, "authority/editBehaviorNotice.html", context)
+def viewAllBehaviorNotice(request):
+    context={}
+    adminNo=request.GET.get("adminNo", None)
+    if not adminNo:
+        allBNotice=models.authorityBehaviorNotice.objects.all()
+        context["allBehaviorNotice"]=allBNotice
+    else:
+        student=stdModels.student.objects.get(adminNo=adminNo)
+        allBNotice=models.authorityBehaviorNotice.objects.filter(student=student)
+        context["allBehaviorNotice"]=allBNotice
+    return render(request, "authority/viewAllBehaviorNotice.html", context)
+
+#TODO complete it
+def editBehaviorNotice(request):
+    context = {}
+    return render(request, "authority/editBehaviorNotice.html", context)

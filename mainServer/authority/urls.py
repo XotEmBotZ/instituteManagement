@@ -10,4 +10,6 @@ urlpatterns = [
     path("viewcomplaint/",views.viewComplaint.as_view()),
     path("editcomplaint/",views.editComplaint),
     path("viewstudent/",views.viewStudent),
+    path("viewallbehaviornotice/",views.viewAllBehaviorNotice),
+    path("editbehaviornotice/",views.editBehaviorNotice)
 ]
