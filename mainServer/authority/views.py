@@ -254,4 +254,18 @@ def viewAllBehaviorNotice(request):
 #TODO complete it
 def editBehaviorNotice(request):
     context = {}
+    if request.method == "POST":
+        furtherNotified=request.POST.get("furtherNotified", None)
+        furtherNotified=bool(furtherNotified)
+        id=request.POST.get("id",None)
+        mdl=models.authorityBehaviorNotice.objects.get(id=id)
+        mdl.furtherNotified=bool(furtherNotified)
+        mdl.save()
+        print(bool(furtherNotified))
+    behaviorNoticeId=request.GET.get("behaviorNoticeId", None)
+    if behaviorNoticeId:
+        context["notice"]=True
+        context["bNotice"]=models.authorityBehaviorNotice.objects.get(id=behaviorNoticeId)
+    else:
+        context["askId"]=True
     return render(request, "authority/editBehaviorNotice.html", context)
