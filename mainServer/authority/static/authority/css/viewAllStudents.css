@@ -40,7 +40,7 @@ form button{
     outline: none;
     border: none;
     background-color: var(--otherC);
-    padding: .75rem .75rem;
+    padding: 1rem 1rem;
     border-radius: 1rem;
     font-family: comfortaa;
     font-size: 1.75rem;

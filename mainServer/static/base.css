@@ -1,11 +1,8 @@
 :root{
-    --primaryC:#135EF2;
-    --secondaryC:#0D378C;
-    --tirtiaryC:#3E588C;
-    --other1C:#77A1D9;
-    --other2C:#BBD3F2;
-    --text1C:#FFFF;
-    --text2C:#000000;
+    --primaryC:#3DB2FF;
+    --secondaryC:#FFEDDA;
+    --tirtiaryC:#FFB830;
+    --otherC:#FF2442;
 }
 
 *{
@@ -14,28 +11,37 @@
 }
 
 body{
-    background-color: var(--other2C);
+    background-color: var(--secondaryC);
+    display: grid;
+    grid-template-columns: 1fr 4fr;
 }
 
 header{
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    height: 100vh;
 }
 
 nav{
     padding: 1rem;
     background-color: var(--primaryC);
-    color: var(--tirtiaryC);
+    color: var(--secondaryC);
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.363);
     display: flex;
+    flex-direction: column;
     align-items: center;
+    height: 100%;
+}
+
+nav h1{
+    text-decoration: underline;
 }
 
 nav *{
-    color: var(--text1C);
+    color: var(--secondaryC);
     font-family: comfortaa;
     text-decoration: none;
     font-size: 1.5rem;
@@ -48,15 +54,16 @@ nav ul{
     list-style: none;
     display: flex;
     width: 100%;
+    flex-direction: column;
 }
 
 nav ul li+li{
-    margin-left: 1rem;
+    margin-top: 1rem;
 }
 
 .navTitle{
     font-weight: 500;
-    color: var(--text1C);
+    color: var(--secondaryC);
     font-size: 2rem;
     font-family: baloo2;
     margin: 0rem 1rem;

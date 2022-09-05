@@ -1,0 +1,21 @@
+{% extends 'authority/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'authority/css/editComplaint.css' %}">
+{% endblock head %}
+{% block main %}
+{% if msgPresent %}
+<div class="sideNote">
+    <h3>{{msg}}</h3>
+</div>
+{% endif %}
+<form action="" method="get">
+    <fieldset>
+        <legend>Complaint Details</legend>
+        <label for="complaintId">Complaint Id:
+            <input type="number" name="complaintId" id="complaintId">
+            <input type="submit" value="Submit">
+        </label>
+    </fieldset>
+</form>
+{% endblock main %}

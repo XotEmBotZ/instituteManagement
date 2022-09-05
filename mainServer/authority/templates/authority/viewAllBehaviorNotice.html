@@ -1,0 +1,46 @@
+{% extends 'authority/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'authority/css/viewAllBehaviorNotice.css' %}">
+{% endblock head %}
+{% block main %}
+{% if msgPresent %}
+<div class="sideNote">
+    <h3>{{msg}}</h3>
+</div>
+{% endif %}
+
+<form action="" id="filter" method="get">
+    <fieldset>
+        <legend>Filter Behavior Notice</legend>
+        <label for="adminNo">adminNo:
+            <input type="number" name="adminNo" id="adminNo">
+        </label>
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Sl. No.</th>
+            <th>Admin No</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Further Notified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bNotice in allBehaviorNotice %}
+        <tr onclick="window.location.href='/authority/editbehaviornotice/?behaviorNoticeId={{bNotice.id}}'">
+            <td>{{forloop.counter}}</td>
+            <td>{{bNotice.student.adminNo}}</td>
+            <td>{{bNotice.student.firstName}} {{bNotice.student.lastName}}</td>
+            <td>{{bNotice.date}}</td>
+            <td>{{bNotice.furtherNotified}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock main %}

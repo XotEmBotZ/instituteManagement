@@ -71,6 +71,6 @@ def recordAttendance(request):
         return JsonResponse({"status": "failed","err":str(e)},status=406)
 
 def testBgJob(request):
-    bgJobs.gainBehaviorScore()
+    bgJobs.clearBehaviorNotice()
     return JsonResponse({"status": "success"})
 

@@ -36,11 +36,11 @@ form label textarea {
     resize: none;
 }
 
-form button{
+form input[type=submit]{
     outline: none;
     border: none;
     background-color: var(--otherC);
-    padding: .75rem .75rem;
+    padding: .75rem;
     border-radius: 1rem;
     font-family: comfortaa;
     font-size: 1.75rem;
@@ -51,6 +51,11 @@ form button{
     margin-top: 1rem;
 }
 
+form input[type=checkbox]{
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 5px;
+}
 
 fieldset{
     padding: 1rem;
@@ -59,32 +64,6 @@ fieldset{
     margin: 1rem 0rem ;
     display: flex;
     flex-direction: column;
-}
-
-#directViewStudentForm fieldset{
-    flex-direction: row !important;
-    align-items: center;
-    align-content: center;
-}
-
-#directViewStudentForm button{
-    margin: 0rem 1rem;
-}
-
-
-table{
-    table-layout: auto;
-    width: 75%;
-}
-
-th{
-    font-family: comfortaa;
-    padding: .5rem;
-    font-size: 2rem;
-}
-
-td{
-    font-family: baloo2;
-    text-align: center;
-    font-size: 1.75rem;
+    /* align-items: center;
+    align-content: center; */
 }
