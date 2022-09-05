@@ -251,7 +251,6 @@ def viewAllBehaviorNotice(request):
         context["allBehaviorNotice"]=allBNotice
     return render(request, "authority/viewAllBehaviorNotice.html", context)
 
-#TODO complete it
 def editBehaviorNotice(request):
     context = {}
     if request.method == "POST":
