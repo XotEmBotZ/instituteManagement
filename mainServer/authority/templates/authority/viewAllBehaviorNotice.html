@@ -34,8 +34,8 @@
         {% for bNotice in allBehaviorNotice %}
         <tr onclick="window.location.href='/authority/editbehaviornotice/?behaviorNoticeId={{bNotice.id}}'">
             <td>{{forloop.counter}}</td>
-            <td>{{bNotice.student.adminNo}}</td>
-            <td>{{bNotice.student.firstName}} {{bNotice.student.lastName}}</td>
+            <td>{{bNotice.candidate.adminNo}}</td>
+            <td>{{bNotice.candidate.firstName}} {{bNotice.candidate.lastName}}</td>
             <td>{{bNotice.date}}</td>
             <td>{{bNotice.furtherNotified}}</td>
         </tr>

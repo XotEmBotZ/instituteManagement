@@ -63,13 +63,13 @@ fieldset{
     align-content: center;
 }
 
-#directViewStudentForm fieldset{
+#directViewcandidateForm fieldset{
     flex-direction: row !important;
     align-items: center;
     align-content: center;
 }
 
-#directViewStudentForm button{
+#directViewcandidateForm button{
     margin: 0rem 1rem;
 }
 

@@ -1,0 +1,23 @@
+{% extends 'candidate/base.html' %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'candidate/css/viewCandidate.css' %}">
+{% endblock head %}
+
+{% block main %}
+{% if msgPresent %}
+<h1 id="msg">{{msg}}</h1>
+{% endif %}
+{% if candFound %}
+<h1 id="candidateName">candidate Name: {{candName}}</h1>
+<div class="candidateDetails">
+    <p id="candClass" class="candDetails">candidate standard: {{candcand}}</p>
+    <p id="candSection" class="candDetails">candidate standard: {{candSec}}</p>
+    <p id="candDob" class="candDetails">candidate DateOfBirth: {{candDob}}</p>
+    <p id="candAddress" class="candDetails">candidate Address: {{candAddress}}</p>
+    <p id="candJoiningDate" class="candDetails">candidate Joining Date: {{candJoiningDate}}</p>
+    <h3 id="candBehaviorScore" class="candDetails ">candidate Behavior Score: <span id="behaviorScore" class="{{behaviorClass}}">{{candBehaviorScore}}</span></h3>
+</div>
+{% endif %}
+{% endblock main %}

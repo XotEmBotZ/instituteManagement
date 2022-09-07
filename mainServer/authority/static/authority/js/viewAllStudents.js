@@ -42,6 +42,6 @@ function sortTable(n) {
     }
 }
 
-function redirectStd(adminNo){
+function redirectcand(adminNo){
   window.location.href=`?adminNo=${adminNo}`
 }

@@ -1,5 +1,5 @@
 from . import models
-from students import models as std_models
+from candidate import models as cand_models
 from authority import models as authorityModels
 import datetime
 import schedule
@@ -25,20 +25,20 @@ def calculateBehaviorScore():
     allComplaint=authorityModels.authorityComplaint.objects.filter(isChecked=False,status="punishment")
     print(allComplaint)
     for complaint in allComplaint:
-        stdModel=complaint.student
-        stdModel.behaviorScore-=complaint.level*10
-        if stdModel.behaviorScore<0:
-            stdModel.behaviorScore=0
-        stdModel.save()
+        candModel=complaint.candidate
+        candModel.behaviorScore-=complaint.level*10
+        if candModel.behaviorScore<0:
+            candModel.behaviorScore=0
+        candModel.save()
         complaint.isChecked=True
         complaint.save()
 schedule.every(30).minutes.do(run_threaded,calculateBehaviorScore)
 
 def gainBehaviorScore():
-    allStudents=std_models.student.objects.filter(behaviorScore__lt=100,gainBehaviorScore=True)
-    for student in allStudents:
-        student.behaviorScore+=1
-        student.save()
+    allcandidates=cand_models.candidate.objects.filter(behaviorScore__lt=100,gainBehaviorScore=True)
+    for candidate in allcandidates:
+        candidate.behaviorScore+=1
+        candidate.save()
 schedule.every().day.at("12:00").do(run_threaded,gainBehaviorScore)
 
 def deleteOldComplaint():
@@ -46,26 +46,26 @@ def deleteOldComplaint():
 schedule.every().day.at("12:00").do(run_threaded,deleteOldComplaint)
 
 def calculateAttendance():
-    allPresentStd=models.temporaryAttendance.objects.filter(date=datetime.date.today())
-    allAbsentStd=std_models.student.objects.all().exclude(student=allPresentStd)
-    for std in allAbsentStd:
-        std_models.studentAttendanceAbsentStudent(student=std).save()
+    allPresentcand=models.temporaryAttendance.objects.filter(date=datetime.date.today())
+    allAbsentcand=cand_models.candidate.objects.all().exclude(candidate=allPresentcand)
+    for cand in allAbsentcand:
+        cand_models.candidateAttendanceAbsentcandidate(candidate=cand).save()
 schedule.every().day.at("12:00").do(run_threaded,calculateAttendance)
 
 def sendBehaviorNotice():
-    stdModels=std_models.student.objects.filter(behaviorScore__lte=5,gainBehaviorScore=True)
-    for std in stdModels:
-        authorityModels.authorityBehaviorNotice(student=std).save()
-        std.gainBehaviorScore=False
-        std.save()
+    cands_models=cand_models.candidate.objects.filter(behaviorScore__lte=5,gainBehaviorScore=True)
+    for cands in cands_models:
+        authorityModels.authorityBehaviorNotice(candidate=cands).save()
+        cands.gainBehaviorScore=False
+        cands.save()
 schedule.every().day.at("12:00").do(run_threaded,sendBehaviorNotice)
 
 def clearBehaviorNotice():
     behaviorNotice=authorityModels.authorityBehaviorNotice.objects.filter(isChecked=False,furtherNotified=True)
     for notice in behaviorNotice:
-        notice.student.behaviorScore=100
-        notice.student.gainBehaviorScore=True
-        notice.student.save()
+        notice.candidate.behaviorScore=100
+        notice.candidate.gainBehaviorScore=True
+        notice.candidate.save()
         notice.isChecked=True
         notice.save()
 schedule.every().day.at("12:00").do(run_threaded,clearBehaviorNotice)

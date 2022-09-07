@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import JsonResponse
-from students import models as std_models
+from candidate import models as cand_models
 from . import models
 import json
 import datetime
@@ -16,17 +16,17 @@ def getFaceCascade(request):
     }
     adminNo = request.GET.get("adminNo", None)
     if adminNo == None:
-        for cascade in std_models.studentFaceCascade.objects.all():
+        for cascade in cand_models.candidateFaceCascade.objects.all():
             cascades["cascade"].append({
-                "student": cascade.student.adminNo,
-                "studentCascade": json.loads(cascade.cascade)
+                "candidate": cascade.candidate.adminNo,
+                "candidateCascade": json.loads(cascade.cascade)
             })
     else:
-        stdModel = std_models.student.objects.get(adminNo=int(adminNo))
-        model = std_models.studentFaceCascade.objects.get(student=stdModel)
+        candModel = cand_models.candidate.objects.get(adminNo=int(adminNo))
+        model = cand_models.candidateFaceCascade.objects.get(candidate=candModel)
         cascades["cascade"].append({
-            "student": model.student.adminNo,
-            "studentCascade": json.loads(model.cascade)
+            "candidate": model.candidate.adminNo,
+            "candidateCascade": json.loads(model.cascade)
         })
     return JsonResponse(cascades)
 
@@ -34,11 +34,11 @@ def getFaceCascade(request):
 @csrf_exempt
 def setAttendance(request):
     if request.method == "POST":
-        absentStudents = json.loads(request.body)["absentStudents"]
-        for absentStudent in absentStudents:
-            std = std_models.student.objects.get(adminNo=absentStudent)
-            std_models.studentAttendanceAbsentStudent.objects.get_or_create(
-                student=std, date=datetime.date.today())
+        absentcandidates = json.loads(request.body)["absentcandidates"]
+        for absentcandidate in absentcandidates:
+            cand = cand_models.candidate.objects.get(adminNo=absentcandidate)
+            cand_models.candidateAttendanceAbsentcandidate.objects.get_or_create(
+                candidate=cand, date=datetime.date.today())
         return JsonResponse({"status": "success"})
     else:
         return JsonResponse({"status": "HttpError"})
@@ -48,11 +48,11 @@ def setFaceCascade(request):
     if request.method == "POST":
         try:
             jsonData = json.loads(request.body)
-            studentAdminNo = jsonData["adminNo"]
-            studentFaceCascade = jsonData["faceCascade"]
-            studentModel=std_models.student.objects.get(adminNo=studentAdminNo)
-            model,created=std_models.studentFaceCascade.objects.get_or_create(student=studentModel)
-            model.cascade=json.dumps(studentFaceCascade)
+            candidateAdminNo = jsonData["adminNo"]
+            candidateFaceCascade = jsonData["faceCascade"]
+            candidateModel=cand_models.candidate.objects.get(adminNo=candidateAdminNo)
+            model,created=cand_models.candidateFaceCascade.objects.get_or_create(candidate=candidateModel)
+            model.cascade=json.dumps(candidateFaceCascade)
             model.save()
             return JsonResponse({"status": "success"})
         except Exception as e:
@@ -63,14 +63,14 @@ def setFaceCascade(request):
 @csrf_exempt
 def recordAttendance(request):
     try:
-        stdAdminNo=json.loads(request.body)["adminNo"]
-        stdModel=std_models.student.objects.get(adminNo=stdAdminNo)
-        models.temporaryAttendance.objects.get_or_create(student=stdModel)
+        candAdminNo=json.loads(request.body)["adminNo"]
+        candModel=cand_models.candidate.objects.get(adminNo=candAdminNo)
+        models.temporaryAttendance.objects.get_or_create(candidate=candModel)
         return JsonResponse({"status": "success"})
     except Exception as e:
         return JsonResponse({"status": "failed","err":str(e)},status=406)
 
 def testBgJob(request):
-    bgJobs.clearBehaviorNotice()
+    bgJobs.sendBehaviorNotice()
     return JsonResponse({"status": "success"})
 

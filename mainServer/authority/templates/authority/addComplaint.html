@@ -12,20 +12,20 @@
 {% endif %}
 <form action="" method="post">
     {% csrf_token %}
-    <input type="hidden" name="studentDetailsCheck" value="{{stdDetailsCheck}}" id="studentCheck">
+    <input type="hidden" name="candidateDetailsCheck" value="{{candDetailsCheck}}" id="candidateCheck">
     <fieldset>
-        <legend>Student Details</legend>
+        <legend>candidate Details</legend>
         <label for="adminNo">AdminNo:
             <input type="number" name="adminNo" id="adminNo" value="{{adminNo}}">
         </label>
-        <label for="stdName">Student Name:
-            <input type="text" name="stdName" id="stdName" value="{{stdName}}" disabled>
+        <label for="candName">candidate Name:
+            <input type="text" name="candName" id="candName" value="{{candName}}" disabled>
         </label>
-        <label for="stdClass">Student Class:
-            <input type="text" name="stdClass" id="stdClass" value="{{stdClass}}" disabled>
+        <label for="candClass">candidate Class:
+            <input type="text" name="candClass" id="candClass" value="{{candClass}}" disabled>
         </label>
-        <label for="stdSec">Student Sec:
-            <input type="text" name="stdSec" id="stdSec" value="{{stdSec}}" disabled>
+        <label for="candSec">candidate Sec:
+            <input type="text" name="candSec" id="candSec" value="{{candSec}}" disabled>
         </label>
     </fieldset>
     <button type="submit">Get Details</button>

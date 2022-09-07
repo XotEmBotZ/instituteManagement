@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views import View
 from . import models
 import datetime
-from students import models as stdModels
+from candidate import models as cand_models
 # Create your views here.
 
 
@@ -13,61 +13,61 @@ def index(request):
     return render(request, "authority/index.html")
 
 
-def addStudent(request):
+def addcandidate(request):
     context = {}
     context['processed'] = False
     if request.method == "POST":
         firstName = request.POST.get("firstName", None)
         lastName = request.POST.get("lastName", None)
-        std = request.POST.get("std", None)
+        cand = request.POST.get("cand", None)
         sec = request.POST.get("sec", None)
         dob = request.POST.get("dob", None)
         address = request.POST.get("address", None)
         try:
-            std = int(std)
+            cand = int(cand)
             sec = sec[0].upper()
 
-            if firstName != None and lastName != None and std != None and sec != None and dob != None and address != None:
-                stdModel = stdModels.student(
-                    firstName=firstName, lastName=lastName, std=std, sec=sec, dob=dob, address=address)
-                stdModel.save()
-                context["adminNo"] = f"Previous Student adminNo:{stdModel.adminNo}"
+            if firstName != None and lastName != None and cand != None and sec != None and dob != None and address != None:
+                candModel = cand_models.candidate(
+                    firstName=firstName, lastName=lastName, cand=cand, sec=sec, dob=dob, address=address)
+                candModel.save()
+                context["adminNo"] = f"Previous candidate adminNo:{candModel.adminNo}"
                 context['processed'] = True
         except Exception as e:
             context = {}
             context["err"] = e
             return render(request, "authority/err.html", context)
-    return render(request, "authority/addStudent.html", context)
+    return render(request, "authority/addCandidate.html", context)
 
 
-def updateStudentFirst(request):
-    return render(request, "authority/updateStudentFirst.html")
+def updatecandidateFirst(request):
+    return render(request, "authority/updateCandidateFirst.html")
 
 
-def updateStudent(request, adminNo):
+def updatecandidate(request, adminNo):
     processed = False
     err = ""
     msg = ""
-    model = stdModels.student.objects.get(adminNo=adminNo)
+    model = cand_models.candidate.objects.get(adminNo=adminNo)
     if request.method == "POST":
         firstName = request.POST.get("firstName", None)
         lastName = request.POST.get("lastName", None)
-        std = request.POST.get("std", None)
+        cand = request.POST.get("cand", None)
         sec = request.POST.get("sec", None)
         dob = request.POST.get("dob", None)
         address = request.POST.get("address", None)
         d = dob.split("-")
         dob = datetime.date(int(d[0]), int(d[1]), int(d[2]))
         try:
-            std = int(std)
+            cand = int(cand)
             sec = sec[0].upper()
-            if firstName != None and lastName != None and std != None and sec != None and dob != None and address != None:
+            if firstName != None and lastName != None and cand != None and sec != None and dob != None and address != None:
                 model.firstName = firstName
                 model.lastName = lastName
                 model.address = address
                 model.sec = sec
                 model.dob = dob
-                model.std = std
+                model.cand = cand
                 model.save()
                 processed = True
                 msg = "Success"
@@ -81,7 +81,7 @@ def updateStudent(request, adminNo):
         "adminNo": model.adminNo,
         "firstName": model.firstName,
         "lastName": model.lastName,
-        "std": model.std,
+        "cand": model.cand,
         "sec": model.sec,
         "dob": model.dob.strftime("%Y-%m-%d"),
         "addr": model.address,
@@ -90,36 +90,36 @@ def updateStudent(request, adminNo):
     if not processed:
         context["err"] = err
     context["msg"] = msg
-    return render(request, "authority/updateStudent.html", context)
+    return render(request, "authority/updateCandidate.html", context)
 
 
 class addComplaint(View):
     def get(self, request):
         context = {
-            "stdDetailsCheck": False
+            "candDetailsCheck": False
         }
         return render(request, "authority/addComplaint.html", context)
 
     def post(self, request):
         context = {}
-        studentAdminNo = request.POST.get("adminNo", None)
+        candidateAdminNo = request.POST.get("adminNo", None)
         try:
-            studentModel = stdModels.student.objects.get(
-                adminNo=studentAdminNo)
-            context["adminNo"] = studentAdminNo if studentAdminNo != None else ""
-            context["stdName"] = studentModel.firstName + \
-                studentModel.lastName if studentAdminNo != None else ""
-            context["stdClass"] = studentModel.std if studentAdminNo != None else ""
-            context["stdSec"] = studentModel.sec if studentAdminNo != None else ""
-            context["stdDetailsCheck"] = True
-            isVerifiedStudent = request.POST.get(
-                "studentDetailsCheck", None) == "True"
-            if isVerifiedStudent:
-                studentAdminNo = request.POST.get("adminNo", None)
-                studentModel = stdModels.student.objects.get(
-                    adminNo=studentAdminNo)
+            candidateModel = cand_models.candidate.objects.get(
+                adminNo=candidateAdminNo)
+            context["adminNo"] = candidateAdminNo if candidateAdminNo != None else ""
+            context["candName"] = candidateModel.firstName + \
+                candidateModel.lastName if candidateAdminNo != None else ""
+            context["candClass"] = candidateModel.cand if candidateAdminNo != None else ""
+            context["candSec"] = candidateModel.sec if candidateAdminNo != None else ""
+            context["candDetailsCheck"] = True
+            isVerifiedcandidate = request.POST.get(
+                "candidateDetailsCheck", None) == "True"
+            if isVerifiedcandidate:
+                candidateAdminNo = request.POST.get("adminNo", None)
+                candidateModel = cand_models.candidate.objects.get(
+                    adminNo=candidateAdminNo)
                 complaintModel = models.authorityComplaint()
-                complaintModel.student = studentModel
+                complaintModel.candidate = candidateModel
                 complaintModel.complaint = request.POST.get("complaint", None)
                 complaintModel.level = request.POST.get("complaintLevel", 1)
                 complaintModel.save()
@@ -127,11 +127,11 @@ class addComplaint(View):
                 context["msg"] = f"Complaint Created with ID- {complaintModel.complaintId}"
             else:
                 context["msgPresent"] = True
-                context["msg"] = "Please Verify the Student AdminNo First!"
-        except stdModels.student.DoesNotExist:
-            studentAdminNo = None
+                context["msg"] = "Please Verify the candidate AdminNo First!"
+        except cand_models.candidate.DoesNotExist:
+            candidateAdminNo = None
             context["msgPresent"] = True
-            context["msg"] = "Student Details Not Found!"
+            context["msg"] = "candidate Details Not Found!"
         return render(request, "authority/addComplaint.html", context)
 
 
@@ -144,10 +144,10 @@ class viewComplaint(View):
                 "complaintId": complaint.complaintId,
                 "complaint": complaint.complaint,
                 "status": complaint.status,
-                "studentName": f"{complaint.student.firstName} {complaint.student.lastName}",
-                "studentStdSec": f"{complaint.student.std}-{complaint.student.sec}",
+                "candidateName": f"{complaint.candidate.firstName} {complaint.candidate.lastName}",
+                "candidatecandSec": f"{complaint.candidate.cand}-{complaint.candidate.sec}",
                 "complaintLevel": complaint.level,
-                "studentAdminNo": complaint.student.adminNo
+                "candidateAdminNo": complaint.candidate.adminNo
             })
         return render(request, "authority/viewComplaint.html", context)
 
@@ -166,16 +166,17 @@ def editComplaint(request):
                     complaint.complaint = complaintText
                     complaint.status = complaintStatus
                     complaint.save()
+                    print(complaint.status)
                 else:
                     context["msgPresent"] = True
                     context["msg"] = "Please provide complaint text and complaint status"
             complaint = models.authorityComplaint.objects.get(
                 complaintId=complaintId)
-            context["adminNo"] = complaint.student.adminNo
-            context["stdName"] = complaint.student.firstName + \
-                " " + complaint.student.lastName
-            context["stdClass"] = complaint.student.std
-            context["stdSec"] = complaint.student.sec
+            context["adminNo"] = complaint.candidate.adminNo
+            context["candName"] = complaint.candidate.firstName + \
+                " " + complaint.candidate.lastName
+            context["candClass"] = complaint.candidate.cand
+            context["candSec"] = complaint.candidate.sec
             context["complaint"] = complaint.complaint
             context["complaintLevel"] = complaint.level
             context["complaintStatus"] = complaint.status
@@ -187,57 +188,57 @@ def editComplaint(request):
         return render(request, "authority/editComplaintBase.html")
 
 
-def viewStudent(request):
+def viewcandidate(request):
     context = {}
     adminNo = request.GET.get("adminNo", None)
     if adminNo:
         try:
-            stdModel = stdModels.student.objects.get(adminNo=adminNo)
-            context["stdName"] = f"{stdModel.firstName} {stdModel.lastName}"
-            context["stdStd"] = stdModel.std
-            context["stdSec"] = stdModel.sec
-            context["stdDob"] = stdModel.dob
-            context["stdAddress"] = stdModel.address
-            context["stdJoiningDate"] = stdModel.joiningDate
-            context["stdBehaviorScore"] = stdModel.behaviorScore
-            if stdModel.behaviorScore >= 0 and stdModel.behaviorScore < 33:
+            candModel = cand_models.candidate.objects.get(adminNo=adminNo)
+            context["candName"] = f"{candModel.firstName} {candModel.lastName}"
+            context["candcand"] = candModel.cand
+            context["candSec"] = candModel.sec
+            context["candDob"] = candModel.dob
+            context["candAddress"] = candModel.address
+            context["candJoiningDate"] = candModel.joiningDate
+            context["candBehaviorScore"] = candModel.behaviorScore
+            if candModel.behaviorScore >= 0 and candModel.behaviorScore < 33:
                 context["behaviorClass"] = "cRed"
-            elif stdModel.behaviorScore >= 33 and stdModel.behaviorScore < 66:
+            elif candModel.behaviorScore >= 33 and candModel.behaviorScore < 66:
                 context["behaviorClass"] = "cYellow"
-            elif stdModel.behaviorScore >= 66:
+            elif candModel.behaviorScore >= 66:
                 context["behaviorClass"] = "cGreen"
-            context["stdFound"] = True
-            behaviorNotices=models.authorityBehaviorNotice.objects.filter(student=stdModel)
+            context["candFound"] = True
+            behaviorNotices=models.authorityBehaviorNotice.objects.filter(candidate=candModel)
             if len(behaviorNotices) > 0:
                 context["behaviorNotices"]=behaviorNotices
                 context["behaviorNoticePresent"]=True
             else:
                 context["behaviorNoticePresent"]=False
-        except stdModels.student.DoesNotExist:
+        except cand_models.candidate.DoesNotExist:
             context["msgPresent"] = True
-            context["msg"] = "Student not found. Please check the adminNo"
-        return render(request, "authority/viewStudent.html", context)
+            context["msg"] = "candidate not found. Please check the adminNo"
+        return render(request, "authority/viewCandidate.html", context)
     else:
-        stdModels1 = stdModels.student.objects.all()
+        cand_models1 = cand_models.candidate.objects.all()
         if request.method == "POST":
-            stdStd = request.POST.get("stdStd", None)
-            stdSec = request.POST.get("stdSec", None)
-            stdBehaviroScoreUpperLimit = request.POST.get(
-                "stdBehaviroScoreUpperLimit", None)
-            stdBehaviroScoreLowerLimit = request.POST.get(
-                "stdBehaviroScoreLowerLimit", None)
-            if stdStd:
-                stdModels1 = stdModels1.filter(std=(stdStd))
-            if stdSec:
-                stdModels1 = stdModels1.filter(sec=stdSec)
-            if stdBehaviroScoreUpperLimit:
-                stdModels1 = stdModels1.filter(
-                    behaviorScore__lte=stdBehaviroScoreUpperLimit)
-            if stdBehaviroScoreLowerLimit:
-                stdModels1 = stdModels1.filter(
-                    behaviorScore__gte=stdBehaviroScoreLowerLimit)
-        context["stdModels"] = stdModels1
-        return render(request, "authority/viewAllStudents.html", context)
+            candcand = request.POST.get("candcand", None)
+            candSec = request.POST.get("candSec", None)
+            candBehaviroScoreUpperLimit = request.POST.get(
+                "candBehaviroScoreUpperLimit", None)
+            candBehaviroScoreLowerLimit = request.POST.get(
+                "candBehaviroScoreLowerLimit", None)
+            if candcand:
+                cand_models1 = cand_models1.filter(cand=(candcand))
+            if candSec:
+                cand_models1 = cand_models1.filter(sec=candSec)
+            if candBehaviroScoreUpperLimit:
+                cand_models1 = cand_models1.filter(
+                    behaviorScore__lte=candBehaviroScoreUpperLimit)
+            if candBehaviroScoreLowerLimit:
+                cand_models1 = cand_models1.filter(
+                    behaviorScore__gte=candBehaviroScoreLowerLimit)
+        context["cand_models"] = cand_models1
+        return render(request, "authority/viewAllCandidate.html", context)
 
 def viewAllBehaviorNotice(request):
     context={}
@@ -246,8 +247,8 @@ def viewAllBehaviorNotice(request):
         allBNotice=models.authorityBehaviorNotice.objects.all()
         context["allBehaviorNotice"]=allBNotice
     else:
-        student=stdModels.student.objects.get(adminNo=adminNo)
-        allBNotice=models.authorityBehaviorNotice.objects.filter(student=student)
+        candidate=cand_models.candidate.objects.get(adminNo=adminNo)
+        allBNotice=models.authorityBehaviorNotice.objects.filter(candidate=candidate)
         context["allBehaviorNotice"]=allBNotice
     return render(request, "authority/viewAllBehaviorNotice.html", context)
 
