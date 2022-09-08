@@ -1,7 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
 from django.http import JsonResponse
-from students import models as std_models
+from candidate import models as cand_models
 from . import models
 import json
 import datetime
@@ -14,19 +13,23 @@ def getFaceCascade(request):
     cascades = {
         "cascade": []
     }
-    adminNo = request.GET.get("adminNo", None)
-    if adminNo == None:
-        for cascade in std_models.studentFaceCascade.objects.all():
-            cascades["cascade"].append({
-                "student": cascade.student.adminNo,
-                "studentCascade": json.loads(cascade.cascade)
-            })
-    else:
-        stdModel = std_models.student.objects.get(adminNo=int(adminNo))
-        model = std_models.studentFaceCascade.objects.get(student=stdModel)
+    adminNo=request.GET.get("adminNo",None)
+    std=request.GET.get("std",None)
+    sec=request.GET.get("sec",None)
+    mdls=cand_models.candidate.objects.all()
+    if adminNo:
+        mdls=mdls.filter(adminNo=adminNo)
+    if std:
+        mdls=mdls.filter(std=std)
+    if sec:
+        mdls=mdls.filter(sec=sec)
+    cascadeMdls=[]
+    for cand in mdls:
+        cascadeMdls.append(cand_models.candidateFaceCascade.objects.get(candidate=cand))
+    for cascade in cand_models.candidateFaceCascade.objects.filter(candidate=mdls):
         cascades["cascade"].append({
-            "student": model.student.adminNo,
-            "studentCascade": json.loads(model.cascade)
+            "candidate": cascade.candidate.adminNo,
+            "candidateCascade": json.loads(cascade.cascade)
         })
     return JsonResponse(cascades)
 
@@ -34,11 +37,11 @@ def getFaceCascade(request):
 @csrf_exempt
 def setAttendance(request):
     if request.method == "POST":
-        absentStudents = json.loads(request.body)["absentStudents"]
-        for absentStudent in absentStudents:
-            std = std_models.student.objects.get(adminNo=absentStudent)
-            std_models.studentAttendanceAbsentStudent.objects.get_or_create(
-                student=std, date=datetime.date.today())
+        absentcandidates = json.loads(request.body)["absentcandidates"]
+        for absentcandidate in absentcandidates:
+            cand = cand_models.candidate.objects.get(adminNo=absentcandidate)
+            cand_models.candidateAttendanceAbsentcandidate.objects.get_or_create(
+                candidate=cand, date=datetime.date.today())
         return JsonResponse({"status": "success"})
     else:
         return JsonResponse({"status": "HttpError"})
@@ -48,11 +51,11 @@ def setFaceCascade(request):
     if request.method == "POST":
         try:
             jsonData = json.loads(request.body)
-            studentAdminNo = jsonData["adminNo"]
-            studentFaceCascade = jsonData["faceCascade"]
-            studentModel=std_models.student.objects.get(adminNo=studentAdminNo)
-            model,created=std_models.studentFaceCascade.objects.get_or_create(student=studentModel)
-            model.cascade=json.dumps(studentFaceCascade)
+            candidateAdminNo = jsonData["adminNo"]
+            candidateFaceCascade = jsonData["faceCascade"]
+            candidateModel=cand_models.candidate.objects.get(adminNo=candidateAdminNo)
+            model,created=cand_models.candidateFaceCascade.objects.get_or_create(candidate=candidateModel)
+            model.cascade=json.dumps(candidateFaceCascade)
             model.save()
             return JsonResponse({"status": "success"})
         except Exception as e:
@@ -63,14 +66,30 @@ def setFaceCascade(request):
 @csrf_exempt
 def recordAttendance(request):
     try:
-        stdAdminNo=json.loads(request.body)["adminNo"]
-        stdModel=std_models.student.objects.get(adminNo=stdAdminNo)
-        models.temporaryAttendance.objects.get_or_create(student=stdModel)
+        candAdminNo=json.loads(request.body)["adminNo"]
+        candModel=cand_models.candidate.objects.get(adminNo=candAdminNo)
+        models.temporaryAttendance.objects.get_or_create(candidate=candModel)
         return JsonResponse({"status": "success"})
     except Exception as e:
         return JsonResponse({"status": "failed","err":str(e)},status=406)
 
+def breakTime(request):
+    try:
+        adminNo=json.loads(request.body)["adminNo"]
+        candModel=cand_models.candidate.objects.get(adminNo=adminNo)
+        model,isCreated=cand_models.candidateBreakTime.objects.get_or_create(candidate=candModel,isEnded=False)
+        if not isCreated:
+            model.isEnded=True
+            model.save()
+        candModel.breakTime=datetime.timedelta()
+        for bt in cand_models.candidateBreakTime.objects.filter(candidate=candModel,isEnded=True):
+            candModel.breakTime+=bt.entryTime-bt.exitTime
+        candModel.save()
+        return JsonResponse({"status": "success"})
+    except Exception as e:
+        return JsonResponse({"status": "error","err":str(e)})
+
 def testBgJob(request):
-    bgJobs.clearBehaviorNotice()
+    bgJobs.sendBehaviorNotice()
     return JsonResponse({"status": "success"})
 

@@ -44,7 +44,7 @@ function sortTable(n) {
 
 let searchInp=document.getElementById("search")
 let complaintIdSearch = document.getElementById("complaintId")
-let studentAdminNo = document.getElementById("stdAdminNo")
+let candidateAdminNo = document.getElementById("candAdminNo")
 let complaintLevel = document.getElementById("complaintLevel")
 
 searchInp.addEventListener('change',e=>{
@@ -73,9 +73,9 @@ complaintIdSearch.addEventListener('change',e=>{
   }
 })
 
-studentAdminNo.addEventListener('change',e=>{
+candidateAdminNo.addEventListener('change',e=>{
   let rows = document.getElementsByClassName("row")
-  let searchText=studentAdminNo.value
+  let searchText=candidateAdminNo.value
   console.log(searchText)
   for (row of rows){
     if (row.getElementsByTagName("td")[1].innerText==searchText){

@@ -1,7 +1,7 @@
 {% extends 'authority/base.html' %}
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'authority/css/addStudent.css' %}">
+<link rel="stylesheet" href="{% static 'authority/css/addCandidate.css' %}">
 {% endblock head %}
 {% block main %}
 {% if isErr %}
@@ -21,8 +21,8 @@
     <label for="lastName">Last Name:
         <input type="text" name="lastName" id="lastName" value="{{lastName}}">
     </label>
-    <label for="std">Standard:
-        <input type="number" name="std" id="std" value="{{std}}">
+    <label for="cand">Standard:
+        <input type="number" name="cand" id="cand" value="{{cand}}">
     </label>
     <label for="sec">Section:
         <input type="text" name="sec" id="sec" value="{{sec}}">

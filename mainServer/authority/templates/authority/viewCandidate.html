@@ -2,22 +2,23 @@
 
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'authority/css/viewstudent.css' %}">
+<link rel="stylesheet" href="{% static 'authority/css/viewCandidate.css' %}">
 {% endblock head %}
 
 {% block main %}
 {% if msgPresent %}
 <h1 id="msg">{{msg}}</h1>
 {% endif %}
-{% if stdFound %}
-<h1 id="studentName">Student Name: {{stdName}}</h1>
-<div class="studentDetails">
-    <p id="stdClass" class="stdDetails">Student standard: {{stdStd}}</p>
-    <p id="stdSection" class="stdDetails">Student standard: {{stdSec}}</p>
-    <p id="stdDob" class="stdDetails">Student DateOfBirth: {{stdDob}}</p>
-    <p id="stdAddress" class="stdDetails">Student Address: {{stdAddress}}</p>
-    <p id="stdJoiningDate" class="stdDetails">Student Joining Date: {{stdJoiningDate}}</p>
-    <h3 id="stdBehaviorScore" class="stdDetails ">Student Behavior Score: <span id="behaviorScore" class="{{behaviorClass}}">{{stdBehaviorScore}}</span></h3>
+{% if candFound %}
+<h1 id="candidateName">candidate Name: {{candName}}</h1>
+<div class="candidateDetails">
+    <p id="candClass" class="candDetails">candidate standard: {{candcand}}</p>
+    <p id="candSection" class="candDetails">candidate standard: {{candSec}}</p>
+    <p id="candDob" class="candDetails">candidate DateOfBirth: {{candDob}}</p>
+    <p id="candAddress" class="candDetails">candidate Address: {{candAddress}}</p>
+    <p id="candJoiningDate" class="candDetails">candidate Joining Date: {{candJoiningDate}}</p>
+    <h3 id="candBreakTime" class="candDetails ">candidate Break Time: {{candBreakTime}}</h3>
+    <h3 id="candBehaviorScore" class="candDetails ">candidate Behavior Score: <span id="behaviorScore" class="{{behaviorClass}}">{{candBehaviorScore}}</span></h3>
     {% if behaviorNoticePresent %}
     <div class="behaviorNotice">
         <h2>BehaviorNotices:-</h2>

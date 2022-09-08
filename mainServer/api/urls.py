@@ -9,4 +9,5 @@ urlpatterns = [
     path('v1/testbgjob/',views.testBgJob),
     #* V2
     path("v2/recordAttendance",views.recordAttendance),
+    path("v2/breakTime",views.breakTime),
 ]

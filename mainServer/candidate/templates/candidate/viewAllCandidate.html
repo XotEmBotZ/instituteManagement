@@ -1,0 +1,73 @@
+{% extends 'candidate/base.html' %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'candidate/css/viewAllCandidate.css' %}">
+<script src="{% static 'candidate/js/viewAllCandidate.js' %}"></script>
+{% endblock head %}
+
+{% block main %}
+{% if msgPresent %}
+<h1 id="msg">{{msg}}</h1>
+{% endif %}
+
+<form action="" method="get" id="directViewcandidateForm">
+    <fieldset>
+        <legend>View candidate with AdminNo</legend>
+        <label for="adminNo">AdminNo:
+            <input type="number" name="adminNo" id="adminNo">
+        </label>
+        <button type="submit">View candidate Details</button>
+    </fieldset>
+</form>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Filter candidates</legend>
+        <label for="candcand">Standard:
+            <input type="number" name="candcand" id="candcand">
+        </label>
+        <label for="candSec">Section:
+            <input type="text" name="candSec" id="candSec">
+        </label>
+        <label for="candBehaviroScoreUpperLimit">Behavior Score UpperLimit:
+            <input type="number" name="candBehaviroScoreUpperLimit" id="candBehaviroScoreUpperLimit">
+        </label>
+        <label for="candBehaviroScoreLowerLimit">Behavior Score LowerLimit:
+            <input type="number" name="candBehaviroScoreLowerLimit" id="candBehaviroScoreLowerLimit">
+        </label>
+        <button type="submit">Filter</button>
+    </fieldset>
+</form>
+
+<section id="cand">
+    <table id="table">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Sl. No.</th>
+                <th onclick="sortTable(1)">AdminNo</th>
+                <th onclick="sortTable(2)">Frist Name</th>
+                <th onclick="sortTable(3)">Last Name</th>
+                <th onclick="sortTable(4)">Standard</th>
+                <th onclick="sortTable(5)">Section</th>
+                <th onclick="sortTable(6)">BehaviorScore</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cand in cand_models %}
+            <tr class="candInfo" onclick="redirectcand({{cand.adminNo}})">
+                <td>{{ forloop.counter }}</td>
+                <td>{{cand.adminNo}}</td>
+                <td>{{cand.firstName}}</td>
+                <td>{{cand.LastName}}</td>
+                <td>{{cand.cand}}</td>
+                <td>{{cand.sec}}</td>
+                <td>{{cand.behaviorScore}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock main %}
