@@ -28,8 +28,8 @@ stdAdminNo=[]
 stdKnownFaceCascade=[]
 
 for a in cascades["cascade"]:
-    stdAdminNo.append(a["student"])
-    stdKnownFaceCascade.append(a["studentCascade"])
+    stdAdminNo.append(a["candidate"])
+    stdKnownFaceCascade.append(a["candidateCascade"])
 
 presentStd=set()
 
