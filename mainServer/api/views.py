@@ -25,8 +25,11 @@ def getFaceCascade(request):
         mdls=mdls.filter(sec=sec)
     cascadeMdls=[]
     for cand in mdls:
-        cascadeMdls.append(cand_models.candidateFaceCascade.objects.get(candidate=cand))
-    for cascade in cand_models.candidateFaceCascade.objects.filter(candidate=mdls):
+        try:
+            cascadeMdls.append(cand_models.candidateFaceCascade.objects.get(candidate=cand))
+        except:
+            pass
+    for cascade in cascadeMdls:
         cascades["cascade"].append({
             "candidate": cascade.candidate.adminNo,
             "candidateCascade": json.loads(cascade.cascade)
