@@ -1,5 +1,4 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
 from django.http import JsonResponse
 from candidate import models as cand_models
 from . import models
@@ -14,19 +13,23 @@ def getFaceCascade(request):
     cascades = {
         "cascade": []
     }
-    adminNo = request.GET.get("adminNo", None)
-    if adminNo == None:
-        for cascade in cand_models.candidateFaceCascade.objects.all():
-            cascades["cascade"].append({
-                "candidate": cascade.candidate.adminNo,
-                "candidateCascade": json.loads(cascade.cascade)
-            })
-    else:
-        candModel = cand_models.candidate.objects.get(adminNo=int(adminNo))
-        model = cand_models.candidateFaceCascade.objects.get(candidate=candModel)
+    adminNo=request.GET.get("adminNo",None)
+    std=request.GET.get("std",None)
+    sec=request.GET.get("sec",None)
+    mdls=cand_models.candidate.objects.all()
+    if adminNo:
+        mdls=mdls.filter(adminNo=adminNo)
+    if std:
+        mdls=mdls.filter(std=std)
+    if sec:
+        mdls=mdls.filter(sec=sec)
+    cascadeMdls=[]
+    for cand in mdls:
+        cascadeMdls.append(cand_models.candidateFaceCascade.objects.get(candidate=cand))
+    for cascade in cand_models.candidateFaceCascade.objects.filter(candidate=mdls):
         cascades["cascade"].append({
-            "candidate": model.candidate.adminNo,
-            "candidateCascade": json.loads(model.cascade)
+            "candidate": cascade.candidate.adminNo,
+            "candidateCascade": json.loads(cascade.cascade)
         })
     return JsonResponse(cascades)
 
