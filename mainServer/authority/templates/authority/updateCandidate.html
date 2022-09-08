@@ -1,0 +1,38 @@
+{% extends 'authority/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'authority/css/addCandidate.css' %}">
+{% endblock head %}
+{% block main %}
+{% if isErr %}
+<h3>{{err}}</h3>
+{% endif %}
+{% if msg %}
+<h3>{{msg}}</h3>
+{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="adminNo">Admin No
+        <input type="number" name="adminNo" id="adminNo" value="{{adminNo}}" disabled >
+    </label>
+    <label for="firstName">First Name:
+        <input type="text" name="firstName" id="firstName" value="{{firstName}}">
+    </label>
+    <label for="lastName">Last Name:
+        <input type="text" name="lastName" id="lastName" value="{{lastName}}">
+    </label>
+    <label for="cand">Standard:
+        <input type="number" name="cand" id="cand" value="{{cand}}">
+    </label>
+    <label for="sec">Section:
+        <input type="text" name="sec" id="sec" value="{{sec}}">
+    </label>
+    <label for="dob">Date Of Birth
+        <input type="date" name="dob" id="dob" value="{{dob}}">
+    </label>
+    <label for="address">Address:
+        <textarea name="address" id="address" cols="30" rows="5">{{addr}}</textarea>
+    </label>
+    <button type="submit">Submit</button>
+</form>
+{% endblock main %}

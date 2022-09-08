@@ -20,7 +20,7 @@ from .veiws import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", index),
-    path("teachers/", include("teachers.urls")),
-    path("students/",include("students.urls")),
+    path("authority/", include("authority.urls")),
+    path("candidate/",include("candidate.urls")),
     path("api/",include("api.urls")),
 ]

@@ -1,0 +1,64 @@
+main {
+    padding: 5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    font-family: baloo2;
+    font-size: 1.75rem;
+}
+
+form label {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    margin: .5rem 0rem;
+    font-size: 2rem;
+}
+
+form label input,
+form label select,
+form label textarea {
+    font-family: comfortaa;
+    font-size: 1.75rem;
+    margin-left: 1rem;
+    outline: none;
+    border: none;
+    background-color: var(--tirtiaryC);
+    padding: .5rem 1rem;
+    border-radius: 1rem;
+}
+
+form label textarea {
+    resize: none;
+}
+
+form input[type=submit],
+form button{
+    outline: none;
+    border: none;
+    background-color: var(--otherC);
+    padding: .5rem;
+    border-radius: 1rem;
+    font-family: comfortaa;
+    font-size: 1.75rem;
+    margin-left: 1rem;
+    display: block;
+    width: max-content;
+    color: var(--secondaryC);
+    margin-top: 1rem;
+}
+
+h3{
+    font-family: 'comfortaa';
+    padding-bottom: 5rem;
+    letter-spacing: 3px;
+}
+
+fieldset{
+    padding: 1rem;
+    border-radius: 1rem;
+    width: max-content;
+    margin: 1rem 0rem ;
+}

@@ -1,0 +1,67 @@
+main{
+    padding: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+table{
+    table-layout: auto;
+    width: 75%;
+}
+
+th{
+    font-family: comfortaa;
+    padding: .5rem;
+    font-size: 1.5rem;
+}
+
+td{
+    font-family: baloo2;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+.complaintColumn{
+    width: 60%;
+}
+
+.dNone{
+    display: none;
+}
+
+.head{
+    display: flex;
+    margin: 1rem 0rem ;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    margin: .5rem 0rem;
+    font-size: 2rem;
+    font-family: baloo2;
+    margin: .5rem 1rem;
+}
+
+label input,
+label textarea {
+    font-family: comfortaa;
+    font-size: 1.75rem;
+    margin-left: 1rem;
+    outline: none;
+    border: none;
+    background-color: var(--tirtiaryC);
+    color: var(--secondaryC);
+    padding: .5rem 1rem;
+    border-radius: 1rem;
+}
+
+label textarea {
+    resize: none;
+}

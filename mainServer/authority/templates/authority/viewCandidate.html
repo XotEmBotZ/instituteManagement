@@ -1,0 +1,47 @@
+{% extends 'authority/base.html' %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'authority/css/viewCandidate.css' %}">
+{% endblock head %}
+
+{% block main %}
+{% if msgPresent %}
+<h1 id="msg">{{msg}}</h1>
+{% endif %}
+{% if candFound %}
+<h1 id="candidateName">candidate Name: {{candName}}</h1>
+<div class="candidateDetails">
+    <p id="candClass" class="candDetails">candidate standard: {{candcand}}</p>
+    <p id="candSection" class="candDetails">candidate standard: {{candSec}}</p>
+    <p id="candDob" class="candDetails">candidate DateOfBirth: {{candDob}}</p>
+    <p id="candAddress" class="candDetails">candidate Address: {{candAddress}}</p>
+    <p id="candJoiningDate" class="candDetails">candidate Joining Date: {{candJoiningDate}}</p>
+    <h3 id="candBreakTime" class="candDetails ">candidate Break Time: {{candBreakTime}}</h3>
+    <h3 id="candBehaviorScore" class="candDetails ">candidate Behavior Score: <span id="behaviorScore" class="{{behaviorClass}}">{{candBehaviorScore}}</span></h3>
+    {% if behaviorNoticePresent %}
+    <div class="behaviorNotice">
+        <h2>BehaviorNotices:-</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Date Issued</th>
+                    <th>Further Notified</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bNotice in behaviorNotices %}
+                <tr onclick="window.location.href='/authority/editbehaviornotice/?behaviorNoticeId={{bNotice.id}}'">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{bNotice.date}}</td>
+                    <td>{{bNotice.furtherNotified}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock main %}

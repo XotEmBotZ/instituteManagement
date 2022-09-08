@@ -1,0 +1,43 @@
+{% extends 'authority/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'authority/css/addComplaint.css' %}">
+<script src="{% static 'authority/js/addComplaint.js' %}" defer></script>
+{% endblock head %}
+{% block main %}
+{% if msgPresent %}
+<div class="sideNote">
+    <h3>{{msg}}</h3>
+</div>
+{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="candidateDetailsCheck" value="{{candDetailsCheck}}" id="candidateCheck">
+    <fieldset>
+        <legend>candidate Details</legend>
+        <label for="adminNo">AdminNo:
+            <input type="number" name="adminNo" id="adminNo" value="{{adminNo}}">
+        </label>
+        <label for="candName">candidate Name:
+            <input type="text" name="candName" id="candName" value="{{candName}}" disabled>
+        </label>
+        <label for="candClass">candidate Class:
+            <input type="text" name="candClass" id="candClass" value="{{candClass}}" disabled>
+        </label>
+        <label for="candSec">candidate Sec:
+            <input type="text" name="candSec" id="candSec" value="{{candSec}}" disabled>
+        </label>
+    </fieldset>
+    <button type="submit">Get Details</button>
+    <fieldset>
+        <legend>Complaint</legend>
+        <label for="complaint">Complaint:
+            <textarea name="complaint" id="complaint" cols="30" rows="5"></textarea>
+        </label>
+        <label for="complaintLevel">Comlpaint Level (1-5):
+            <input type="number" min=1 max=5 name="complaintLevel" id="complaintLevel" value="1" >
+        </label>
+    </fieldset>
+    <button type="submit">Submit</button>
+</form>
+{% endblock main %}

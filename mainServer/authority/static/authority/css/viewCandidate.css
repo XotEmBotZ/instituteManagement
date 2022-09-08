@@ -1,0 +1,62 @@
+
+main{
+    padding: 2.5rem;
+    font-family: comfortaa;
+}
+
+#msg{
+    padding: 0rem 0rem 3rem 0rem;
+}
+#candidateName{
+    font-family: baloo2;
+    font-size: 3rem;
+}
+
+.candidateDetails{
+    margin: .5rem;
+    border: 2px solid var(--tirtiaryC);
+    width: max-content;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.candDetails{
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+#candBehaviorScore{
+    font-size: 2.5rem;
+}
+
+.cGreen{
+    color: rgb(0, 194, 0);
+}
+
+.cRed{
+    color: rgb(255, 75, 75);
+}
+
+.cYellow{
+    color: rgb(255, 208, 0);
+}
+
+#behaviorScore{
+    text-shadow: 1px 1px 5px var(--secondaryC);
+}
+
+h2{
+    font-size: 2.5rem;
+}
+
+table thead th{
+    font-family: comfortaa;
+    font-size: 2rem;
+    padding: 0rem .5rem;
+}
+
+table td{
+    text-align: center;
+    font-size: 1.75rem;
+}

@@ -1,0 +1,49 @@
+{% extends 'candidate/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'candidate/css/viewComplaint.css' %}">
+<script defer src="{% static 'candidate/js/viewComplaint.js' %}"></script>
+{% endblock head %}
+{% block main %}
+<div class="head">
+    <label for="id">Complaint Id:
+        <input type="number" name="complaintId" id="complaintId">
+    </label>
+    <label for="id">candidate AdminNo:
+        <input type="number" name="candAdminNo" id="candAdminNo">
+    </label>
+    <label for="search">Search:
+        <input type="search" name="search" id="search">
+    </label>
+    <label for="search">Complaint Level:
+        <input type="number" name="complaintLevel" id="complaintLevel">
+    </label>
+
+</div>
+<table id="table">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">Complaint Id</th>
+            <th onclick="sortTable(1)">candidate AdminNo.</th>
+            <th onclick="sortTable(2)">candidate Name</th>
+            <th onclick="sortTable(3)">candidate cand-Sec</th>
+            <th onclick="sortTable(4)" class="complaintColumn">Complaint</th>
+            <th onclick="sortTable(5)">Level</th>
+            <th onclick="sortTable(6)">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for complaint in allComplaint %}
+        <tr class="row">
+            <td>{{complaint.complaintId}}</td>
+            <td>{{complaint.candidateAdminNo}}</td>
+            <td>{{complaint.candidateName}}</td>
+            <td>{{complaint.candidatecandSec}}</td>
+            <td>{{complaint.complaint}}</td>
+            <td>{{complaint.complaintLevel}}</td>
+            <td>{{complaint.status}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock main %}

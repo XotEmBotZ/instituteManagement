@@ -1,0 +1,48 @@
+{% extends 'authority/base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'authority/css/editbehaviorNotice.css' %}">
+{% endblock head %}
+{% block main %}
+{% if msgPresent %}
+<div class="sideNote">
+    <h3>{{msg}}</h3>
+</div>
+{% endif %}
+{% if askId %}
+<form action="" method="get">
+    <fieldset>
+        <legend>Behavior Notice Id</legend>
+        <label for="behaviorNoticeId">Behavior Notice Id:
+            <input type="number" name="behaviorNoticeId" id="behaviorNoticeId">
+        </label>
+        <input type="submit" value="Edit">
+    </fieldset>
+</form>
+{% endif %}
+
+
+{% if notice %}
+<form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <input type="hidden" name="id" value={{bNotice.id}}>
+        <legend>Behavior Notice</legend>
+        <label for="adminNo">AdminNo:
+            <input type="number" name="adminNo" id="adminNo" value="{{bNotice.candidate.adminNo}}" disabled>
+        </label>
+        <label for="name">Name:
+            <input type="text" name="name" id="name" value="{{bNotice.candidate.firstName}} {{bNotice.candidate.lastName}}" disabled>
+        </label>
+        <label for="date">Date:
+            <input type="date" name="date" id="date" value="{{bNotice.date}}" disabled>
+        </label>
+        <label for="furtherNotified">Further Notified:
+            <input type="checkbox" name="furtherNotified" id="furtherNotified" value="True" {% if bNotice.furtherNotified %}checked{% endif %}>
+        </label>
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+{% endif %}
+
+{% endblock main %}
