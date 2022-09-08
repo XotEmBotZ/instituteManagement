@@ -207,6 +207,10 @@ def viewcandidate(request):
             elif candModel.behaviorScore >= 66:
                 context["behaviorClass"] = "cGreen"
             context["candFound"] = True
+            context["candBreakTime"]=datetime.timedelta()
+            for bt in cand_models.candidateBreakTime.objects.filter(candidate=candModel):
+                context["candBreakTime"]+=bt.entryTime-bt.exitTime
+                # break
             behaviorNotices=models.authorityBehaviorNotice.objects.filter(candidate=candModel)
             if len(behaviorNotices) > 0:
                 context["behaviorNotices"]=behaviorNotices
@@ -226,6 +230,10 @@ def viewcandidate(request):
                 "candBehaviroScoreUpperLimit", None)
             candBehaviroScoreLowerLimit = request.POST.get(
                 "candBehaviroScoreLowerLimit", None)
+            candBreakTimeUpperLimit = request.POST.get(
+                "candBreakTimeUpperLimit", None)
+            candBreakTimeLowerLimit = request.POST.get(
+                "candBreakTimeLowerLimit", None)
             if candcand:
                 cand_models1 = cand_models1.filter(cand=(candcand))
             if candSec:
@@ -236,6 +244,12 @@ def viewcandidate(request):
             if candBehaviroScoreLowerLimit:
                 cand_models1 = cand_models1.filter(
                     behaviorScore__gte=candBehaviroScoreLowerLimit)
+            if candBreakTimeUpperLimit:
+                cand_models1 = cand_models1.filter(
+                    breakTime__lte=datetime.timedelta(minutes=float(candBreakTimeUpperLimit)))
+            if candBreakTimeLowerLimit:
+                cand_models1 = cand_models1.filter(
+                    breakTime__gte=datetime.timedelta(minutes=float(candBreakTimeLowerLimit)))
         context["cand_models"] = cand_models1
         return render(request, "authority/viewAllCandidate.html", context)
 

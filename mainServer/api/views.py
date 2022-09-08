@@ -78,9 +78,13 @@ def breakTime(request):
         if not isCreated:
             model.isEnded=True
             model.save()
+        candModel.breakTime=datetime.timedelta()
+        for bt in cand_models.candidateBreakTime.objects.filter(candidate=candModel,isEnded=True):
+            candModel.breakTime+=bt.entryTime-bt.exitTime
+        candModel.save()
         return JsonResponse({"status": "success"})
-    except:
-        return JsonResponse({"status": "error",})
+    except Exception as e:
+        return JsonResponse({"status": "error","err":str(e)})
 
 def testBgJob(request):
     bgJobs.sendBehaviorNotice()

@@ -1,4 +1,4 @@
-from email.policy import default
+import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -14,6 +14,7 @@ class candidate(models.Model):
     joiningDate=models.DateField(auto_now_add=True)
     behaviorScore=models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)],default=100)
     gainBehaviorScore=models.BooleanField(default=True)
+    breakTime=models.DurationField(default=datetime.timedelta(0))
     
     def __str__(self) -> str:
         return f"{self.adminNo}-{self.firstName} {self.lastName} - {self.cand}{self.sec}"

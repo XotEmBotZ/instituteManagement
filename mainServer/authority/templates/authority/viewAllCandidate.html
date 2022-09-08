@@ -37,6 +37,12 @@
         <label for="candBehaviroScoreLowerLimit">Behavior Score LowerLimit:
             <input type="number" name="candBehaviroScoreLowerLimit" id="candBehaviroScoreLowerLimit">
         </label>
+        <label for="candBreakTimeUpperLimit">Break Time UpperLimit(Mins):
+            <input type="number" name="candBreakTimeUpperLimit" id="candBreakTimeUpperLimit" step="any">
+        </label>
+        <label for="candBreakTimeLowerLimit">Break Time LowerLimit(Mins):
+            <input type="number" name="candBreakTimeLowerLimit" id="candBreakTimeLowerLimit"  step="any">
+        </label>
         <button type="submit">Filter</button>
     </fieldset>
 </form>
@@ -52,6 +58,7 @@
                 <th onclick="sortTable(4)">Standard</th>
                 <th onclick="sortTable(5)">Section</th>
                 <th onclick="sortTable(6)">BehaviorScore</th>
+                <th onclick="sortTable(7)">Break Time</th>
             </tr>
         </thead>
         <tbody>
@@ -60,10 +67,11 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{cand.adminNo}}</td>
                 <td>{{cand.firstName}}</td>
-                <td>{{cand.LastName}}</td>
+                <td>{{cand.lastName}}</td>
                 <td>{{cand.cand}}</td>
                 <td>{{cand.sec}}</td>
                 <td>{{cand.behaviorScore}}</td>
+                <td>{{cand.breakTime}}</td>
             </tr>
             {% endfor %}
         </tbody>
