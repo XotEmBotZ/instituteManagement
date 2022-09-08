@@ -31,3 +31,9 @@ class candidateAttendanceAbsentcandidate(models.Model):
 
     def __str__(self):
         return f"{self.candidate.firstName} {self.candidate.lastName}-{self.candidate.cand}{self.candidate.sec} {self.date}"
+
+class candidateBreakTime(models.Model):
+    candidate=models.ForeignKey(candidate,on_delete=models.CASCADE)
+    isEnded=models.BooleanField(default=False)
+    exitTime=models.DateTimeField(auto_now_add=True)
+    entryTime=models.DateTimeField(auto_now=True)

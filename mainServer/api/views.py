@@ -70,6 +70,18 @@ def recordAttendance(request):
     except Exception as e:
         return JsonResponse({"status": "failed","err":str(e)},status=406)
 
+def breakTime(request):
+    try:
+        adminNo=json.loads(request.body)["adminNo"]
+        candModel=cand_models.candidate.objects.get(adminNo=adminNo)
+        model,isCreated=cand_models.candidateBreakTime.objects.get_or_create(candidate=candModel,isEnded=False)
+        if not isCreated:
+            model.isEnded=True
+            model.save()
+        return JsonResponse({"status": "success"})
+    except:
+        return JsonResponse({"status": "error",})
+
 def testBgJob(request):
     bgJobs.sendBehaviorNotice()
     return JsonResponse({"status": "success"})

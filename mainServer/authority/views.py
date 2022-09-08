@@ -1,5 +1,4 @@
-from multiprocessing import context
-from operator import mod
+import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
